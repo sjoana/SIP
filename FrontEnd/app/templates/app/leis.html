@@ -1,0 +1,98 @@
+{% extends "app/tramite.html" %}
+{% load staticfiles %}
+
+{% block title %}SGPLP - Diplomas{% endblock %}
+
+
+{% block contentSuper %}
+<div class="col-md-10 noap">
+    <div class="row contentColor padd">
+        <div class="row" id="menu_feed">
+            <ul>
+                <li id="destaques"><img src='{% static "app/image/img_trans.gif" %}' class="diplomaIcon" />DIPLOMAS</li>
+            </ul>
+        </div>
+        <div class="btn-group dropdown" id="TipoDiploma">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="" data-diploma="projeto_lei">Projeto de Lei &nbsp; <span class="caret"></span></a>
+            <ul class="dropdown-menu Filtro">
+                <li role="presentation"><a id="projlei" role="menuitem" tabindex="-1" data-lei="projeto_lei">Projeto de Lei</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="proposta_lei">Proposta de Lei</a></li>
+                <li role="presentation"><a id="projlei" role="menuitem" tabindex="-1" data-lei="orcamento_estado">Proposta de Lei do Orçamento Geral do Estado</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="proposta_lei_plano">Proposta de Lei do Plano</a></li>
+                <li role="presentation"><a id="projlei" role="menuitem" tabindex="-1" data-lei="orcamento_retificativo">Proposta de Lei de Alteração do Orçamento Geral do Estado</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="prop_lei_aut_legislativa">Proposta de Lei de Autorização Legislativa</a></li>
+                <li role="presentation"><a id="projlei" role="menuitem" tabindex="-1" data-lei="prop_res_aprov_tratados">Proposta de Resolução Sobre Acordos, Tratados e Convenções Internacionais</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="apreciacao_programa_governo">Apreciação do Programa do Governo</a></li>
+                <li role="presentation"><a id="projlei" role="menuitem" tabindex="-1" data-lei="debate_com_ministros">Debate com Ministros</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="proj_res_assent_aus_pr">Assentimento para Ausência do Presidente da República do Território Nacional</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="projeto_resolucao">Projeto de Resolução</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="pergunta_escrita">Perguntas Escritas ao Governo</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="pergunta_oral">Perguntas Orais ao Governo</a></li>
+                <li role="presentation"><a id="proplei" role="menuitem" tabindex="-1" data-lei="petition">Petições</a></li>
+            </ul>
+        </div>
+        <div class="row" id="ContentTable">
+            <div class="col-md-12">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-3">Título</th>
+                            <th class="col-lg-7">Subtítulo</th>
+                            <th class="col-lg-2">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leiscontainer"></tbody>
+                </table>
+                <!--pagination -->
+                <p class="LeisPG"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var elementsPerPage = 10;
+    alterafocusmenu('diploma','','tramite'); //registado em function.js
+
+    var doctype = 0;
+
+    //seleciona tipo de diploma
+    $(".dropdown-menu li a").click(function(){
+        var selText = $(this).text();
+        data = $(this).attr('data-lei');
+        $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' &nbsp; <span class="caret"></span>');
+        $('#TipoDiploma a').attr('data-diploma',data);
+    });
+
+    $('.Filtro').click(function(){
+        doctype = $('#TipoDiploma a').attr('data-diploma');       
+        callDiplome(doctype, 1, elementsPerPage, $('#leiscontainer'), $('.LeisPG'));
+    });
+
+    //inicializa paginação da listagem dos deputados
+    var x = parseInt('{{ TotalLeis|escapejs }}');
+    $(function(){
+        $('.LeisPG').bootpag({
+            total: 1,
+            page: 1,
+            maxVisible: 5,
+            leaps: true,
+            firstLastUse: true,
+            first: '←',
+            last: '→',
+            wrapClass: 'pagination',
+            activeClass: 'active',
+            disabledClass: 'disabled',
+            nextClass: 'next',
+            prevClass: 'prev',
+            lastClass: 'last',
+            firstClass: 'first'
+        }).on("page", function(event, num){
+            div_html = $('#leiscontainer');
+            callDiplome(doctype, num, elementsPerPage, div_html, $('.LeisPG'));
+        });
+    });
+    $('.Filtro').click();
+
+</script>
+{% endblock %}
+

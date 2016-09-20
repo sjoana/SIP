@@ -1,0 +1,121 @@
+{% extends "app/index.html" %}
+{% load staticfiles %}
+{% block title %}SGPLP - Grupo Político{% endblock %}
+{% block contentSuper %}
+<div class="col-lg-10">
+    <div class="row" id="menu_members">
+        <ul>
+            <li id="membros"><img src='{% static "app/image/img_trans.gif" %}' class="membrosIcon" />&nbsp;<span id="IconDesc">GRUPO POLÍTICO</span></li>
+        </ul>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active tabText"><a href="#tabs-1" data-toggle="tab">Grupo político</a></li>
+        <li class="tabText"><a href="#tabs-2" data-toggle="tab">Membros</a></li>
+        <li class="tabText"><a href="#tabs-3" data-toggle="tab">Iniciativas</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane fade in active tab-1">
+            <p></p>
+        </div>
+        <div id="tabs-2" class="tab-pane fade tab-2"> 
+            <ul class="commentlist"></ul>
+            <div class="clearfix"></div>
+            <p class="memberPagination"></p>
+        </div>
+        <div id="tabs-3" class="tab-pane fade tab-3">
+            <ul class="contentMembers"></ul>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var elementsPerPage = 9;
+    var xml_feed = '';
+    var xml_GrupoPolitico = '{{ GrupoPoliticoMember |escapejs }}';
+    var idGrupoPolitico = '{{ idGrup }}' + 'Grop';
+    var totalPages = Math.ceil( parseInt('{{ TotalMembers|escapejs }}') / elementsPerPage);
+    var grupoPolitico = '{{ Group |escapejs }}';
+
+    if (totalPages == 1)
+        $('.memberPagination').addClass('hide');
+    else $('.memberPagination').removeClass('hide');
+
+    $(function () {
+        alterafocusmenu('grupos', idGrupoPolitico, ''); //registado em function.js
+        //var tam = $(xml_GrupoPolitico).find('item').length;
+        var GroupPoliticoBody = $('#tabs-1');
+        var GroupPoliticoMembers = $('.commentlist');
+        var GroupPoliticoDocument = $('#tabs-3');
+
+        GroupPoliticoBody.empty();
+        GroupPoliticoMembers.empty();
+        GroupPoliticoDocument.empty();
+
+        var info = $($($(grupoPolitico).find('item')[0]).find('group_full_name')).text();
+
+        if (info != "")
+            $("#IconDesc").text(info);
+
+        GroupPoliticoContent = $($($(grupoPolitico).find('item')[0]).find('group_body')).text();
+        if (GroupPoliticoContent == "")
+            GroupPoliticoContent = '[Sem informação disponível para esta secção.]';
+        GroupPoliticoBody.append('<p style="text-align:justify;">' + GroupPoliticoContent + '</p>');
+        showmembres(xml_GrupoPolitico, "Deputado");
+
+        //gera paginação
+        $('.memberPagination').bootpag({
+            total: totalPages,
+            page: 1,
+            maxVisible: 10,
+            leaps: true,
+            firstLastUse: true,
+            first: '←',
+            last: '→',
+            wrapClass: 'pagination',
+            activeClass: 'active',
+            disabledClass: 'disabled',
+            nextClass: 'next',
+            prevClass: 'prev',
+            lastClass: 'last',
+            firstClass: 'first'
+        }).on("page", function (event, num) {
+            //verifica se a paginação é diferente de 1 para atribuir valores ao limite inferior
+            Limitepag = 1;
+            if (num != 1) {
+                Limitepag = (num * elementsPerPage) - elementsPerPage-1;
+            }
+
+            div_html = $('.commentlist');
+            IDGroup = $('#gruposPoliticos .active a').attr('href').split('/')[2];
+            link = "/ListaMemberGrupo/" + ((num-1)*elementsPerPage ) + "/"+ elementsPerPage + "/" + IDGroup;
+
+            //get id of group
+
+            $.ajax({
+                url: link,
+                success: function (xml_data) {
+                    div_html.empty();
+                    /*Faz Listagem de membros*/
+                    showmembres(xml_data, "Deputado");
+                },
+                error: function () {
+                    alert("erro ao devolver valor");
+                }
+            });
+        });
+
+    });
+</script>
+{% endblock %}

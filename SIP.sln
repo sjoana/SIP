@@ -7,6 +7,10 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FrontEnd", "FrontEnd\FrontE
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BackEnd", "BackEnd\BackEnd.pyproj", "{5FDA6CE3-B7B2-4913-B268-61492BA49B78}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SILPCache", "SILPCache\SILPCache.pyproj", "{84E0AFE5-1F52-4C29-9E89-46CC7D163E1B}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "WebServices", "WebServices\WebServices.pyproj", "{5DDE4CB8-DFAF-4E5D-9CD9-C09082A2452B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,12 @@ Global
 		{5FDA6CE3-B7B2-4913-B268-61492BA49B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FDA6CE3-B7B2-4913-B268-61492BA49B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FDA6CE3-B7B2-4913-B268-61492BA49B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84E0AFE5-1F52-4C29-9E89-46CC7D163E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84E0AFE5-1F52-4C29-9E89-46CC7D163E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDE4CB8-DFAF-4E5D-9CD9-C09082A2452B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DDE4CB8-DFAF-4E5D-9CD9-C09082A2452B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DDE4CB8-DFAF-4E5D-9CD9-C09082A2452B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDE4CB8-DFAF-4E5D-9CD9-C09082A2452B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

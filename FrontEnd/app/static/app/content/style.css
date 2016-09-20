@@ -1,0 +1,502 @@
+/* @import url("/staticpub/fonts/OpenSans"); */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+html { position: relative; min-height: 100%;}
+body, html {
+  font-family :'Open Sans', Arial, Helvetica, sans-serif,Times New Roman;
+}
+#hiddenMenu{display: none;}
+/* Wrappers */
+/* ------------------------------- */
+#wrapper {width: 100%;  background-color:black;}
+#navbar-header-logo { background-image: url("../image/TANCV.png"); background-repeat: no-repeat; height: 96px; }
+#navbar-header-banner { background: url("../image/TOPANCVFLAG.png"); background-repeat: no-repeat; height: 96px; }
+.navbar-inverse { background-color: #800000; border-top-left-radius:0px; border-top-right-radius:0px;
+                  border: solid #606060; border-width: 0 0 3px; box-shadow: 0 1px 3px rgba(0,0,0,.3); /**/ }
+.navbar-inverse .navbar-toggle { border-color: #fff; }
+.navbar-inverse li a { color: white!important; }
+.navbar-inverse li a:hover { color: #e0e0e0!important; }
+.modal .modal-body { overflow-y: auto; min-height:420px;}
+.back-to-top { position: fixed; bottom: 26px; right: 0px; text-decoration: none; color: #000000; width: 40px; height: 40px; border-radius: 50%; background: url("../image/totop.jpg") no-repeat left top; font-size: 12px; padding: 1em; z-index: 22; }
+.back-to-top:hover { background: url("../image/totop.jpg") -120px 0px; }
+
+.footer { position: absolute; width: 100%; font-size: .8em; bottom:0px; 
+    /*text-align: center;height: 60px;  background-color: #BEC3CC;  color: #fff; bottom: 0px; */
+}
+.footer .logo { display:inline-block; float:left; padding-top:10px; padding-right:10px; }
+.footer .rights { display:inline-block; float:right; padding-top:10px; }
+.spacer { min-height:52px; }
+
+.agendaIcon { width: 36px; height: 36px; background: url("../image/icons_home.png") -66px -33px; vertical-align: bottom;  }
+.agendaIcon:hover{ width: 36px; height: 36px; background: url("../image/icons_home.png") -67px 0px; vertical-align: bottom;}
+.calendar { height: 30px; width: 30px; background: url("../image/icons_home.png") -60px 0px; vertical-align: bottom; }
+.destaqueIcon { height: 30px; width: 30px; background: url("../image/icons_home.png") -120px 0px; vertical-align: bottom; }
+.diplomaIcon { width: 30px; height: 30px; background: url("../image/icons_home.png") -150px 0px; vertical-align: bottom; }
+.membrosIcon { width: 30px; height: 30px; background: url("../image/icons_home.png") 0px 0px; vertical-align: bottom; }
+.perguntaIcon { height: 30px; width: 30px; background: url("../image/icons_home.png") -90px 0px; vertical-align: bottom; }
+.peticaoIcon { width: 30px; height: 30px; background: url("../image/icons_home.png") -180px 0px; vertical-align: bottom; }
+.publicacaoIcon{ width: 36px; height: 36px; background: url("../image/icons_home.png") -101px -33px; vertical-align: bottom; }
+.publicacaoIcon:hover{ width: 36px; height: 36px; background: url("../image/icons_home.png") -101px 0px; vertical-align: bottom; }
+.tramiteIcon { height: 30px; width: 30px; background: url("../image/icons_home.png") -30px 0px; vertical-align: bottom; }
+
+.VerIniciativa{ float: right;  font-size: 0.5em; }
+
+/* Missed in action*/
+
+
+.botton-silp { width: 88px; }
+.hiddenMenu { display: none; }
+/*
+.blockpub{border-bottom: solid 1px #E9E9E9;padding-top: 5px;}
+.blockpubContent{padding-top: 10px;}*/
+/*menu left
+.menu-left { margin-top: 60px; padding-left: 0px; }
+.menu-left a { color: #2b5292; text-decoration:none; }
+.menu-left li { list-style-type: none; padding: 10px; }*/
+
+#actionGroup { padding-bottom: 20px; }
+#actionGroup #ativo { background: #a31f2d; }
+
+.nopaddingLeft{height: 45px;}
+.iconTitle{vertical-align: bottom;}
+
+#actionGroup button{
+  border-radius: 3px;
+  color: #fff;
+  border: none;
+}
+
+.menu-left li:hover{
+  font-weight: bold;
+}
+
+.commentlist{
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+  padding-left: 0px;
+  min-height: 500px;
+}
+.commentlist li{
+  list-style-type: none;
+  padding: 3px;
+  text-align: justify;
+}
+
+.commentlist h5 a{
+  color: #080808;
+}
+
+/*.content_feed li{
+  list-style-type: none;
+  padding: 10px;
+  text-align: justify;
+}
+
+.content_feed h5 a{
+  color: #4d4d4d;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+}
+
+.content_feed{
+  padding-left:0px;
+}*/
+
+.menu-lef{
+  padding-left: 0px;
+}
+
+#menu_feed{
+  padding-left: 0px;
+  margin-left: 0px;
+}
+#menu_feed ul li{
+  list-style-type: none;
+  display: inline;
+}
+
+ul li{
+    list-style-type: none;
+    display: inline;
+}
+
+#menu_feed ul{
+  padding: 0px;
+  margin-bottom: 0px;
+}
+
+#menu_members, #menu_feed{
+  /*border-bottom: dotted 1px #4d4d4d;*/
+  border-bottom: solid 1px #e9e9e9;
+  margin-bottom: 25px;
+  vertical-align: bottom;
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-bottom: 2px;
+  padding-top: 10px;
+}
+
+.menu a:hover{
+	/*background-color: #d01116;*/
+  	background-color: #800000;/*b0042F*/
+	color: #fff;}
+.gw-nav-list li:hover{
+	/*background-color: #d01116;*/
+  	/*background-color: #800000;*/
+}
+
+.showMenu li:hover{
+  	background-color: #800000;
+	/*background-color: #d01116;*/ 
+	color:#fff;
+}
+
+#menu_members ul{
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+#menu_members li{
+  list-style-type: none;
+  padding: 12px;
+  display: inline;
+  padding-left: 0px;
+}
+
+#menu_members a{
+  color: #4d4d4d;
+}
+
+/*#imagemContent{
+  overflow: hidden;
+  height:90px;
+}*/
+
+#newsImagem{
+  width:90px;
+  text-align: left;
+  padding: 0px;
+  overflow: hidden;
+  border: solid 1px rgba(90, 90, 90, 0.10);
+}
+
+#newsTitle{
+  padding-right: 0px;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+}
+
+#newsTitle span{
+  /*color: #a31f2d;*/
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.ratio { width:90px; cursor: pointer; }
+.newsradio{ max-width: 70px; max-height:70px; }
+
+
+#destaques{
+  padding-left: 0px;
+}
+
+.calendarA{
+  padding-left: 0px;
+  margin-bottom: 0px;
+  border-bottom: dotted 1px #000;
+  margin-bottom: 40px;
+}
+
+/*#IconHome { padding-bottom: 4px;  height: 25px; width: 25px;padding-right: 4px; }
+#IconHome:hover { background: url("../image/homebutton_sprite.png") 0px 0px; }*/
+
+/*.nav-menu { padding-left: 130px; }
+@media(max-width: 1195px){ .nav-menu{padding-left: 10px;} }*/
+
+/*.title { margin-top:0px; font-size: 0.9em; line-height: 1.42857; }
+.title:hover { text-decoration: none; cursor: pointer; }*/
+
+/**/
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img { width: 100%; height: 218px; margin: auto; }
+.carousel-indicators{z-index: auto}
+.carousel-control .icon-prev, .carousel-control .glyphicon-chevron-left { left: 25%; }
+.carousel-control .icon-next, .carousel-control .glyphicon-chevron-right { right: 25%; }
+.carousel-indicators { bottom: -34px; z-index: 500; }
+.carousel-indicators .active { margin: 1px; width: 10px; height: 10px; border: 1px solid #800000; background-color: #800000 !important; }
+.carousel-indicators li { display: inline-block; width: 10px; height: 10px; margin: 1px; text-indent: -999px; border: 1px solid #4d4d4d; border-radius: 10px; cursor: pointer; background-color: rgba(0, 0, 0, 0); }
+.carousel-indicators li:hover { background-color: #4d4d4d; }
+
+
+.texto{font-size: 0.9em;}
+
+#legislaturetext{text-align: justify;padding-bottom: 15px;}
+#legislaturetext p a{color:#000; text-decoration: none;}
+.nopadding{padding: 0px;}
+.nomargingLeft{margin-left: 0px;}
+
+#legislatureinfo a img{padding-bottom: 22px;}
+
+#menu_home{padding-left: 15px;margin-left: 0px; padding-right: 15px;}
+#menu_home ul{padding-left: 0px;}
+
+.contentColor{background-color: #fff; margin-left: 0px; padding-left: 15px; padding-right: 15px;}
+.contentColor ul{padding-top: 10px;}
+#menu_feed{padding-top: 10px;}
+.padd{padding-left: 15px; padding-right: 15px; margin-left: 0px; margin-bottom: 15px;}
+
+/**/
+#calendartitle{ text-align: center; }
+#tabs{ font-size: 0.9em;margin-bottom: 10px; }
+
+/*#filter{ display: -webkit-inline-box; padding-bottom: 15px; }
+#filter .dropdown{padding-right: 5px;}
+.dropdown .btn{background: #f2f2f2; border: none;font-size:0.9em;}
+.dropdown .btn:hover{ background: #a31f2d; color:#ffffff;}
+#filter .dropdown ul li{font-size:0.8em;}
+#filter .dropdown .btn .caret:hover{border-top-color: #ffffff;}*/
+
+#divcalendar { margin-left: 0px; }
+/*#datepicker { padding-right: 0px; padding-left: 0px; }
+
+#inputFilter{ padding-right: 0px; }
+#butonFilter{padding-bottom: 15px;}
+#inputFilter input{
+  margin-bottom: 2px;
+  border-color: #cccccc !important;
+  border-style: solid !important;
+  border: 1px;
+  background: #f2f2f2;
+  width: 100%;
+  height: 21px;
+  border-radius: 3px;
+}
+#butonFilter input{
+    padding-left: 0px;
+    height: 42px;
+    width: 100%;
+    font-family: Arial;
+    border-radius: 0px 4px 4px 0px;
+    border: 1px solid rgb(179, 179, 179);
+    color: rgb(3, 4, 9);
+    font-size: 0.75rem;
+    background: linear-gradient(white, rgb(179, 179, 179));
+}
+#butonFilter{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.pagination { float: right; font-size: 0.9em; }
+.pagination > .active > a,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span,
+.pagination > .active > span:hover,
+.pagination > .active > span:focus { background: #2b5292; border-color: #2b5292; }
+
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td { border: none; }
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default { background: #fbfbfb; }
+
+.ui-state-hover, .ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover, .ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus { background: #e9eefb; }
+
+*/
+
+#dataHistotico{
+  float: right;
+}
+/* Mini layout previews
+-------------------------------------------------- 
+.mini-layout,
+.mini-layout .mini-layout-body,
+.mini-layout.fluid .mini-layout-sidebar {
+  height: 100px;
+}
+.mini-layout-body{
+  padding-left: 50px;
+}
+.mini-layout {
+  margin-bottom: 20px;
+}
+.mini-layout .mini-layout-body {
+  margin: 0 auto;
+  width: 70%;
+}
+.mini-layout.fluid .mini-layout-sidebar,
+.mini-layout.fluid .mini-layout-header,
+.mini-layout.fluid .mini-layout-body {
+  float: left;
+}
+.mini-layout.fluid .mini-layout-sidebar {
+  width: 20%;
+}
+.mini-layout.fluid .mini-layout-body {
+  width: 77.5%;
+  margin-left: 2.5%;
+}*/
+
+.menuLeft{padding-bottom: 50px;}
+.tab-content{padding: 15px; text-align: justify;}
+.navbar-collapse{max-height: 100% !important;}
+#agendaModal{width: 60%;}
+.Sempadding{  padding-right: 0px; padding-left: 0px;  }
+
+.noap .contentColor{min-height: 380px;}
+.npad{padding-right: 0px; padding-left: 0px; padding-top: 10px; }
+.espacoCidadao img{width: 100%; padding-bottom: 15px;}
+.menuVertical{padding-right: 0px;}
+.menuV{padding-bottom: 5px;}
+.contentlogin{padding-left: 0px;}
+
+/*@media (max-width: 999px) {
+  #agendaModal{width: 90%;}
+  .espacoCidadao{display: none;}
+  .hiddenMenu{display: inline;}*/
+  #pesquisar{
+    padding-left: 15px;
+    padding-bottom: 15px;
+    background-color: rgb(109, 145, 173);
+    height: auto;
+  }
+
+  /*#pesquisar form{padding-top: 5px;}*/
+  .search-all-div input{height: auto; border: solid 1px #eeeeee; padding-top: 10px; margin-top: 10px;}
+  .search-all-div button{height: auto; border: solid 1px #eeeeee; padding-top: 6px; margin-top: 10px;}
+
+  .contentlogin{padding-top: 15px;}
+  .right{float: right;}
+
+  #navbar-header-barnner{display: none;}
+  #nopadding{  padding-right: 0px; padding-left: 0px;  }
+
+
+
+  .navbar-static-top{
+      background: url("../image/ancv_brandcenter.png") no-repeat;
+      background-color: rgba(15, 75, 120, 0.6);
+      background-position: left;
+  }
+
+  #div-menu-top{height: auto;}
+  .menu-top{
+    padding-left: 30px;
+  }
+
+  #hiddenMenu{display: inline;}
+  .showMenu{display: none;}
+
+.tab-content{padding-left: 0px; padding-right: 0px;}
+.menuLeft{padding-left: 12px; padding-right: 12px;}
+.navbar-form{padding-top: 2px; height: 20px;}
+.navbar-form input {height: auto;}
+#srch-term{width: 300px;}
+.navbar-form .input-group-btn button{height: 28px;}
+.contentColor{padding-bottom: 15px; margin-left: 0px;}
+.noap{padding-right: 0px; padding-left: 0px; margin-top: 15px;}
+
+.main{  margin-left: 0px; }
+#ContentTable{padding-right: 0px; padding-left: 0px;}
+/*#datadocumento{text-align: right;}*/
+
+.stuck{
+  position:fixed;
+  z-index:1000;
+  width:100%;
+  top:0;
+}
+
+
+.rss img { height: 20px;width: 20px;background: url("../image/feed_news.png") 0px 20px; }
+.rss img:hover{ height: 20px;width: 20px;background: url("../image/feed_news.png") 20px 0px; }
+
+/*.pesq img{ height: 20px;width: 20px;background: url("../image/pesq_acancad.png") 0px 20px; }
+.pesq img:hover{ height: 20px;width: 20px;background: url("../image/pesq_acancad.png") 20px 0px; }
+.pesq { padding-left: 20px;}
+
+.login img { height: 20px;width: 20px;background: url("../image/area_privada.png") 0px 40px; }
+.login img:hover {height: 20px;width: 20px;background: url("../image/area_privada.png") 20px 0px; }
+
+.navbar-toggle {float: right; margin-left: 15px; border-radius: 7px; padding: 5px; }
+.navbar-default .navbar-toggle .icon-bar{background-color: rgb(224, 224, 224);height: 6px;width: 27px;}
+
+.modal-content{
+    border-radius: 1px;
+    box-shadow: 0px 0px 0px 8px rgba(0,0,0,0.3);
+}*/
+
+
+.tb{min-height: 300px;}
+.datadocumento{float: right;}
+
+/*.table > tbody:first-of-type > tr > td:first-child { text-align: left; }
+.table td{ text-align: right; }
+.table{ font-size: 14px; }*/
+
+.cal-context{padding-bottom: 15px;}
+.fotoModal{width:100%;}
+.conteudoInfo{height: 140px;}
+.conteudoInfo span{position: absolute; bottom: 0;}
+
+.fonte{float: right;}
+
+.dropdown-menu li{cursor: pointer;}
+
+/*menu bs_leftnavi.js*/
+ul .menu{
+  padding-left: 15px;
+}
+#srch-term{padding-top:5px;}
+
+
+.pesquisaDeputado{padding-left: 15px; background-color: #f4f4f4; padding-top: 10px; padding-bottom: 10px;}
+.pesquisaDeputado input{height: 29px; font-size: 0.8em; color: #3c3c3c;}
+
+.pesquisaAvancado{ padding-top: 10px;border-bottom: solid 1px #E9E9E9; font-size: 0.9em;}
+.pesquisaAvancado select{height: 29px; font-size: 0.9em;}
+.pesquisaAvancado .checkbox{color:#3c3c3c; margin-top: 5px;}
+.pesquisaAvancado .checkbox label{padding-right: 20px;}
+#result{padding-top: 10px;padding-bottom: 10px; border: solid 1px #f4f4f4;}
+.estadoDoc{font-size: 0.9em;}
+
+#nomeDeputado{width: 100%;}
+
+#partidoDeputado{height: 29px; font-size: 0.8em; color: #3c3c3c;}
+
+.semRegisto{padding: 10px;font-size: 14px;}
+
+.titulo{width: 87%; margin-bottom: 10px; font-size: 0.9em; padding: 5px; border: 1px solid #cccccc;}
+.ver{height: 31px; margin-top: 10px; }
+
+.mail{font-size: 0.9em;}
+
+.print{float: right; margin-top: 8px;cursor: pointer;}
+.print img{width: 20px;}
+
+.glyphicon-download{font-size: 20px; cursor: pointer;}
+
+.btpadding{padding-bottom: 15px;}
+
+/*------------ Session Sherach ------------*/
+.search-all-section { width: 100%; display: table; padding: 1em 0 0; padding-top: 0px;}
+.search-all { border-radius: 0px; width: 100%; padding: .5em 1em; height: 21px; border: none; font-size: 11px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000; font-style: italic;}
+#pesquisar{
+  padding-top: 4px;
+}
+.search-all-button{border-radius: 0px; height: 21px; padding-top: 0px; border-left: 0px; background-color: #DBDEED; font-size: 14px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #3e3e3e; }
+
+
+.modal-body img#newsFoto {
+    float:left;
+    padding: 4px 14px 14px 0px;
+}

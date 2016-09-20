@@ -1,0 +1,74 @@
+{% extends "app/tramite.html" %}
+{% load staticfiles %}
+{% block title %}Petições{% endblock %}
+
+{% block contentSuper %}
+<div class="col-md-10 noap">
+    <div class="row contentColor padd">
+        <div class="col-md-12" id="menu_members">
+            <ul>
+                <li id="membros">
+                    <img src='{% static "app/image/img_trans.gif" %}' class="membrosIcon" />
+                    <span id="IconDesc">&nbsp;</span>
+                    <a href="/printPDF" target="_blank" class="print"><img src='{% static "app/image/Pdf-Icon.png" %}'></a>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active" id="IconComisao"><a href="#tabs-1" data-toggle="tab">Texto</a></li>
+            <li id="IconMembros"><a href="#tabs-2" data-toggle="tab">Versões</a></li>
+            <li id="IconDoc"><a href="#tabs-3" data-toggle="tab">Documentos Associados</a></li>
+            <li id=""><a href="#tabs-4" data-toggle="tab">Histórico de Iniciativas</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="tabs-1" class="tab-pane fade in active tab1"><article></article></div>
+            <div id="tabs-2" class="tab-pane fade tab2">
+                <table class="table tableV table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="versoes">
+                        <tr>
+                            <td style="display: none;"></td>
+                            <td style="display: none;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="tabs-3" class="tab-pane fade tab3">
+                <ul class="docsanexados"></ul>
+            </div>
+            <div id="tabs-4" class="tab-pane fade tab4">
+                <table class="table tableH table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="peticaoHistory">
+                        <tr>
+                            <td style="display: none;"></td>
+                            <td style="display: none;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var documenthistory = '{{ documenthistory |escapejs }}';
+    var workflow = $.parseJSON('{{ workflow|escapejs }}');
+    var idDoc = '{{ DocId |escapejs }}';
+
+    $('#IconDesc').append($(documenthistory).find('doctitle')[0].textContent);
+    alterafocusmenu('peticoes', '', 'tramite'); //registado em function.js
+    geraprintPdf(documenthistory);
+
+    priencheTramite(documenthistory, workflow, idDoc);
+</script>
+{% endblock %}

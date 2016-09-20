@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% extends "app/index.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <script>
+        $(function(){
+            content = $('.resultadoPesquisa');
+            content.empty();
+        });
+    </script>
+
+    <div class="row" id="menu_members">
+        <ul>
+            <li id="membros"><img src="{% static "app/image/img_trans.gif" %}" class="tramiteIcon" />{% block nameIcon %}&nbsp;PESQUISA AVANÇADA{% endblock %}</li>
+        </ul>
+    </div>
+    <div class="row pesquisaAvancado nomargingLeft">
+        <form onsubmit="return false;">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <select class="form-control tipoPesquisa" required autofocus>
+                        <option value="">Pesquisar Por:</option>
+                        <option value="comissao">Comissão</option>
+                        <option value="grupo">Grupo Político</option>
+                        <option value="documento">Documentos</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" name="titulo" class="titulo" required placeholder="Texto a pesquisar...">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row checkbox nopadding nomargingLeft">
+                <div class="col-md-12 nopadding">
+                    <div class="col-md-3 nopadding">
+                        <label><input class="p_membros" type="checkbox" value="3">Membros</label>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        <label><input class="p_doc" type="checkbox" value="2">Documentos</label>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        <label><input class="p_nome" type="checkbox" value="1" >Nome Comissão</label>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        <label><input type="checkbox" onclick='desabeCheck(this.id,"p_membros","p_doc","p_nome")' class="p_documento" id="p_documento" value="All" >Todos</label>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        <button class="ver" onclick="verPesquisa()">Mostrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="row">
+        <table class="table table-horizontal">
+            <tbody class="resultadoPesquisa" id="result">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block feed %}
+    <script>
+        var xml_feed = '{{ feed |escapejs }}';
+    </script>
+
+    <div class="row" id="menu_feed">
+        <ul>
+            <li id="destaques"><img src="{% static "app/image/img_trans.gif" %}" class="destaqueIcon" />&nbsp;DESTAQUES</li>
+        </ul>
+    </div>
+
+    <div class="mini-layout fluid content_feed">
+
+    </div>
+
+    <div class="modal fade" id="noticia">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modaltitle" style="font-weight: bold;"></h4>
+                </div>
+                <div class="modal-body" id="modalnews" style="text-align:justify;overflow-y: scroll;overflow-x:hidden; height:450px;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+{% endblock %}

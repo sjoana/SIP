@@ -1,0 +1,110 @@
+{% extends "app/tramite.html" %}
+{% load staticfiles %}
+
+{% block title %}Petições{% endblock %}
+
+
+{% block contentSuper %}
+
+    <div class="col-md-10 noap">
+    <div class="row contentColor padd">
+        <div class="row" id="menu_feed">
+            <ul>
+                <li id="destaques"><img src="{% static "app/image/img_trans.gif" %}" class="peticaoIcon" />PETIÇÃO</li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover" id="peticoes">
+                    <thead>
+                    <tr>
+                        <th>Descrição</th><th id="datadocumento">Data</th>
+                    </tr>
+                    </thead>
+                    <tbody id="Peticoescontainer">
+
+                    </tbody>
+                </table>
+                <!--pagination -->
+                <p class="PeticoesPG"></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        alterafocusmenu('peticoes','','tramite'); //registado em function.js
+
+        $('#projlei').bind('click',function(){
+            doctype=0;
+            $(this).attr('href','/leis/'+doctype)
+            $('#dropdownMenu1').text("Projeto de Lei");
+
+        });
+        $('#proplei').bind('click',function(){
+            doctype=1;
+            $(this).attr('href','/leis/'+doctype)
+            $('#dropdownMenu1').text("Proposta de Lei");
+        });
+
+        feed = '{{ feed|escapejs }}';
+        var tituloDoc = $(feed).find('item doctitle');
+        var dataDoc = $(feed).find('item docstatus_date');
+        var idDoc = $(feed).find('item docdoc_id');
+
+        content = $('#Peticoescontainer');
+
+        for(var i=0; i<$(feed).find('item').length;i++){
+            var dataDocObj = $(dataDoc[i]).text().split('T');
+            content.append('<tr><td>'+
+            '<a href="/docpeticoes/'+ $(idDoc[i]).text() +'/docpeticao">'+$(tituloDoc[i]).text()+'</a>'+
+            '</td>'+
+            '<td id="datadocumento">'+dataDocObj[0]+'</td></tr>');
+        }
+
+        //inicializa paginação da listagem dos deputados
+        var x = parseInt('{{ Totalpeticoes|escapejs }}');
+        $(function(){
+            $('.PeticoesPG').bootpag({
+                total: x,
+                page: 1,
+                maxVisible: 5,
+                leaps: true,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+            }).on("page", function(event, num){
+                //verifica se a paginação é diferente de 1 para atribuir valores ao limite inferior
+                Limitepag = 1;
+                if (num != 1){
+                    Limitepag = (num * 5) - 4;
+                }
+
+                div_html = $('#Peticoescontainer');
+                link = "/ListaT/"+Limitepag+"/"+3;
+
+                $.ajax({
+                    url: link,
+                    success: function(data) {
+                        div_html.empty();
+                        var xml_data = data;
+
+                        showTramite(xml_data,'docpeticoes',content)/* prienche os dados na tabela cujo id é:Peticoescontainer (xml_data - xml e url)*/
+                    },
+                    error:function(data) {
+                        alert("erro ao devolver valor")
+                    }
+                });
+
+            });
+        });
+    </script>
+{% endblock %}
+

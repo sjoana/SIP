@@ -1,0 +1,93 @@
+{% extends "app/tramite.html" %}
+{% load staticfiles %}
+{% block title %}Perguntas{% endblock %}
+
+{% block contentSuper %}
+    <div class="col-md-10 noap">
+    <div class="row contentColor padd">
+    <div class="row" id="menu_feed">
+        <ul>
+            <li id="destaques"><img src="{% static "app/image/img_trans.gif" %}" class="perguntaIcon" />PERGUNTAS</li>
+        </ul>
+    </div>
+
+    <div class="row" id="nopadding">
+        <div class="col-md-12">
+            <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Descrição</th><th id="datadocumento">Data</th>
+                    </tr>
+                    </thead>
+                <tbody id="Perguntacontainer">
+
+                </tbody>
+            </table>
+        <!--pagination -->
+        <p class="perguntasPG"></p>
+        </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        alterafocusmenu('pergunta','','tramite'); //registado em function.js
+        var feed = '{{ feed|escapejs }}';
+        var tituloDoc = $(feed).find('item doctitle');
+        var dataDoc = $(feed).find('item docstatus_date');
+        var idDoc = $(feed).find('item docdoc_id');
+
+        for(var i=0; i<$(feed).find('item').length;i++){
+            var dataDocObj = $(dataDoc[i]).text().split('T');
+            $('#Perguntacontainer').append('<tr><td>'+
+            '<a href="/docperguntas/'+ $(idDoc[i]).text() +'">'+$(tituloDoc[i]).text()+'</a>'+
+            '</td>'+
+            '<td id="datadocumento">'+dataDocObj[0]+'</td></tr>');
+        }
+
+        //inicializa paginação da listagem dos deputados
+
+        $(function(){
+            var x = parseInt('{{ TotalPerguntas|escapejs }}');
+            $('.perguntasPG').bootpag({
+                total: x,
+                page: 1,
+                maxVisible: 5,
+                leaps: true,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+            }).on("page", function(event, num){
+                //verifica se a paginação é diferente de 1 para atribuir valores ao limite inferior
+                Limitepag = 1;
+                if (num != 1){
+                        Limitepag = (num * 5) - 4;
+                }
+
+                div_html = $('#Perguntacontainer');
+                link = "/ListaT/"+Limitepag+"/"+2;
+
+                $.ajax({
+                    url: link,
+                    success: function(data) {
+                        div_html.empty();
+                        var xml_data = data;
+                        showTramite(xml_data,'docperguntas',div_html)
+                    },
+                    error:function(data) {
+                        alert("erro ao devolver valor")
+                    }
+                });
+
+            });
+        });
+
+    </script>
+{% endblock %}
+

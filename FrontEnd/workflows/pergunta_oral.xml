@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<workflow title="Perguntas Orais ao Governo"
+    description="Perguntas Orais ao Governo"
+    permission_actions=".View .Edit .Add .Delete"
+    >
+  <allow permission=".Add" roles="
+            ClerkAssembly
+            MemberAssembly
+        " />
+
+
+  <!-- features -->
+  <feature name="audit" enabled="true" />
+  <feature name="version" enabled="true" />
+  <feature name="attachment" enabled="true" />
+  <feature name="event" enabled="true" />
+  <feature name="signatory" enabled="false"/>
+  <feature name="schedule" enabled="true">
+    <parameter name="schedulable_states" value="CRBP_agendada plenario_agendado" />
+    <parameter name="scheduled_states" value="CRBP plenario" />
+  </feature>
+  <feature name="workspace" enabled="true" />
+  <feature name="notification" enabled="true" />
+  <feature name="email" enabled="true" />
+  <feature name="download" enabled="true" />
+  <feature name="group_assignment" enabled="true" />
+
+  <!-- workflow facets -->
+  <facet name="draft">
+    <allow permission=".View" roles="Drafter Anonymous" />
+    <allow permission=".Edit" roles="Drafter" />
+    <allow permission=".Delete" roles="Drafter" />
+  </facet>
+
+
+
+  <facet name="redraft">
+    <allow permission=".View" roles="Drafter Owner" />
+    <allow permission=".Edit" roles="Drafter" />
+  </facet>
+  <facet name="view_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly " />
+  </facet>
+  <facet name="edit_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="edit_Speaker">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="SpeakerAssembly" />
+  </facet>
+  <facet name="public_edit_Clerk">
+    <allow permission=".View" roles="Anonymous" />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="public">
+    <allow permission=".View" roles="Anonymous" />
+  </facet>
+
+  <!-- Inicio - apresentação MESA -->
+  <state id="rascunho" title="Inicial" actions="version">
+    <facet ref=".draft" />
+    <facet ref="attachment.add_drafter" />
+    <facet ref="event.add_clerk" />
+  </state>
+  <state id="mesa" title="Mesa"
+          actions="version" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+    <facet ref="group_assignment.add_internal" />
+  </state>
+
+
+
+  <state id="CRBP_agendada" title="Agendada Conferência dos Representantes das Bancadas Parlamentares" actions="version" permissions_from_state="rascunho" />
+  <state id="CRBP_adiada" title="Adiada Conferência dos Representantes das Bancadas Parlamentares" actions="version" permissions_from_state="rascunho" />
+  <state id="CRBP" title="Conferência dos Representantes das Bancadas Parlamentares [Art.º 144.º, n.º 3 do RPN]" actions="version" permissions_from_state="rascunho" />
+  <!-- Distribuição aos deputados e governo-->
+  <state id="perguntas_distribuidas" title="Perguntas Distribuídas aos Deputados e Governo [Art.º 144.º, n.º 4 do RPN]" actions="version" permissions_from_state="rascunho" />
+  <!-- apreciacao plenario -->
+  <state id="plenario_agendado" title="Agendado Plenário" actions="version" permissions_from_state="CRBP_agendada" />
+  <state id="plenario_adiado" title="Adiado Plenário" actions="version" permissions_from_state="CRBP_agendada" />
+  <state id="plenario" title="Plenário [Art.º 146 da CRDTL]" actions="version" permissions_from_state="CRBP_agendada" />
+
+ 
+  <!--Estados terminais -->
+  <state id="publicacao_atas_parlamento" title="Publicado no Jornal do Parlamento Nacional" actions="version" permissions_from_state="CRBP_agendada" />
+
+
+  <!-- Final dos estados-->
+  <!-- workflow transitions -->
+  <!-- inicio -->
+  <transition title="Entrada das Perguntas"
+      source=""
+      destination="rascunho"
+      trigger="automatic"
+      require_confirmation="true"
+    />
+
+  <transition title="Submeter Perguntas"
+      source="rascunho"
+      destination="mesa"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <!-- CRBP -->
+  <transition title="Agendar CRBP"
+      source="mesa CRBP_adiada"
+      destination="CRBP_agendada"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <transition title="Adiar CRBP"
+      source="CRBP_agendada"
+      destination="CRBP_adiada"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <transition title="CRBP"
+      source="CRBP_agendada"
+      destination="CRBP"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <!-- distribuidas -->
+  <transition title="Distribuir Perguntas aos Deputados e ao Governo"
+      source="CRBP"
+      destination="perguntas_distribuidas"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+  
+  <!-- generalidade -->
+  <transition title="Agendar Plenário"
+      source="perguntas_distribuidas plenario_adiado"
+      destination="plenario_agendado"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+  <transition title="Adiar do Plenário"
+      source="plenario_agendado"
+      destination="plenario_adiado"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+  <transition title="Plenário"
+      source="plenario_agendado"
+      destination="plenario"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+
+  <transition title="Publicação no Jornal do Parlamento Nacional"
+    source="plenario"
+    destination="publicacao_atas_parlamento"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+
+
+</workflow>
+

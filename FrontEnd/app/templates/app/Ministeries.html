@@ -1,0 +1,65 @@
+{% extends "app/home.html" %}
+{% load staticfiles %}
+{% block title %}SGPLP - Ministério{% endblock %}
+{% block contentSuper %}
+<div class="col-lg-10">
+    <div class="row" id="menu_members">
+        <ul>
+            <li id="membros"><img src='{% static "app/image/img_trans.gif" %}' class="membrosIcon" />&nbsp;<span id="IconDesc">MINISTÉRIO</span></li>
+        </ul>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active tabText"><a href="#tabs-1" data-toggle="tab">Ministério</a></li>
+        <li class="tabText"><a href="#tabs-2" data-toggle="tab">Membros</a></li>
+        <li class="tabText"><a href="#tabs-3" data-toggle="tab">Iniciativas</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane fade in active tab-1">
+            <p></p>
+        </div>
+        <div id="tabs-2" class="tab-pane fade tab-2">
+            <div class="col-md-12">
+                <div class="commentlist" id="holder"></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div id="tabs-3" class="tab-pane fade tab-3">
+            <ul class="contentMembers"></ul>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var xml_feed = '';
+    var xml_MinistersMembers = '{{ MinistersMembers |escapejs }}';
+    var idMinisterio = '{{ idMinisterio }}' + 'Min';
+
+    $(function () {
+        alterafocusmenu('ministerio', idMinisterio, ''); //registado em function.js
+        var tam = $(xml_MinistersMembers).find('item').length;
+        var MinistersBody = $('#tabs-1');
+        var MinistersMembers = $('.commentlist');
+        var MinistersDocument = $('#tabs-3');
+
+        MinistersBody.empty();
+        MinistersMembers.empty();
+        MinistersDocument.empty();
+
+        MinistersContent = $($($(xml_MinistersMembers).find('item')[0]).find('group_body')).text();
+        MinistersBody.append('<p style="text-align:justify;">' + MinistersContent + '</p>');
+        showmembres(xml_MinistersMembers, "Governo");
+    });
+</script>
+{% endblock %}

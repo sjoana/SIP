@@ -1,0 +1,99 @@
+#holder{
+	/* The unordered list that is to be split into pages */
+
+
+	overflow:hidden;
+	position:relative;
+}
+
+.swControls{
+	float:right;
+}
+
+a.swShowPage{
+
+	/* The links that initiate the page slide */
+
+	background-color:#d4d4d4;
+	float:left;
+	height:15px;
+	margin:4px 3px;
+	text-indent:-9999px;
+	width:15px;
+	/*border:1px solid #ccc;*/
+
+	/* CSS3 rounded corners */
+
+	-moz-border-radius:7px;
+	-webkit-border-radius:7px;
+	border-radius:7px;
+}
+
+a.swShowPage:hover,
+a.swShowPage.active{
+	background-color:#2b5292;
+
+	/*	CSS3 inner shadow */
+	-moz-box-shadow:0 0 7px #1e435d inset;
+	/*-webkit-box-shadow:0 0 7px #1e435d inset;*/
+	box-shadow:0 0 7px #1e435d inset;
+}
+
+#holder li{
+
+	list-style:none outside none;
+
+	float:left;
+	width:100%;
+	/* Regular CSS3 box shadows (not inset): */
+
+
+}
+
+
+.clear{
+	/* This class clears the floated elements */
+	clear:both;
+}
+
+
+/* The styles below are only necessary for the styling of the demo page */
+
+h1{
+	background-color:#272B2C;
+	border-bottom:1px solid #000000;
+	color:#EEEEEE;
+	font-size:32px;
+	font-weight:normal;
+	margin-bottom:30px;
+	padding:30px 0;
+	text-align:center;
+
+	-moz-box-shadow:0 1px 0 #444444;
+	-webkit-box-shadow:0 1px 0 #444444;
+	box-shadow:0 1px 0 #444444;
+}
+
+
+h2{
+	font-size:14px;
+	font-weight:normal;
+	text-align:center;
+
+	position:absolute;
+	right:40px;
+	top:43px;
+}
+
+a, a:visited {
+	text-decoration:none;
+	outline:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+a img{
+	border:none;
+}

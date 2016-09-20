@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+{% extends "app/tramite.html" %}
+{% load staticfiles %}
+{% block title %}Inquerito{% endblock %}
+
+{% block contentSuper %}
+    <div class="col-md-10 noap">
+        <div class="row contentColor padd">
+        <div class="col-md-12" id="menu_members">
+            <ul>
+                <li id="membros">
+                    <img src="{% static "app/image/img_trans.gif" %}" class="membrosIcon" />
+                    <span id="IconDesc">&nbsp;</span>
+                    <a href="/printPDF" target="_blank" class="print"><img src="{% static "app/image/Pdf-Icon.png" %}"></a>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active" id="IconComisao"><a href="#tabs-1" data-toggle="tab">Texto</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="tabs-1" class="tab-pane fade in active tab1">
+                <article></article>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        
+
+        var docAssoc = '{{ XMLdata |escapejs }}';
+        //foreach ( docAssoc->children() as $item_name => $item ) {
+        //    foreach ( $item->dataset as $dataset ) {
+        //           $json[$item_name]['dataset'] = (array)$dataset->attributes();
+        //}        
+        //alert(docAssoc);
+        //$.each(docAssoc.root, function(i, item) {
+        //    alert(item.docstatus_date);
+        //});
+        var number=0;
+        var split = window.location.href.split("/");
+        if (split[split.length - 1] == "")
+            number = split[split.length - 2];
+        else
+            number = split[split.length - 1];
+        number = (number - 1);
+        var root = $($(docAssoc)[1])[0];//$($(docAssoc)[number]);
+        var element = root.children[number];
+        $('#IconDesc').empty();
+        $('article').empty();
+        $('#IconDesc').append($(element).find('doctitle').text());
+        $('article').append($(element).find('docbody').text());
+
+    </script>
+
+{% endblock %}

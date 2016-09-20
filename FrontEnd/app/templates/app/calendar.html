@@ -1,0 +1,72 @@
+{% extends "app/index.html" %}
+{% load staticfiles %}
+{% block title %}SGPLP - Agenda{% endblock %}
+
+{% block contentSuper %}
+<div class="col-lg-10 noap">
+    <div class="row contentColor padd">
+        <ul class="calendarA">
+            <li><img src='{% static "app/image/img_trans.gif" %}' class="calendar" />{% block nameIcon %}&nbsp;AGENDA{% endblock %}</li>
+        </ul>
+        <div class="col-md-12 nopadding">
+            <div class="btn-group col-lg-3 nopadding">
+                <button class="btn btn-default" data-calendar-view="month">Mês</button>
+                <button class="btn btn-default" data-calendar-view="week">Semana</button>
+                <button class="btn btn-default" data-calendar-view="day">Dia</button>
+            </div>
+            <div class="col-lg-6" id="calendartitle"></div>
+            <div class="col-lg-3 nopadding">
+                <div style="float:right" class="btn-group" >
+                    <button class=" btn btn-default" data-calendar-nav="prev">
+                    &lt;&lt;</button>
+                    <!--<button class="" data-calendar-nav="today">Hoje</button>-->
+                    <button class="btn btn-default" data-calendar-nav="next">&gt;&gt;</button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <hr>
+        <div id="calendar"></div>
+        <div class="modal fade" id="events-modal">
+            <div class="modal-dialog" id="agendaModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <div class="row">
+                            <div class="col-md-10"><h4></h4></div>
+                            <div class="col-md-2"><a href="/printPDF" target="_blank" class="print"><img src='{% static "app/image/Pdf-Icon.png" %}' /></a></div>
+                        </div>
+                    </div>
+                    <div class="modal-body" style="height: 400px;"></div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript" src='{% static "app/scripts/underscore-min.js" %}'></script>
+    <script type="text/javascript" src='{% static "app/scripts/language/pt-BR.js" %}'></script>
+    <script type="text/javascript" src='{% static "app/scripts/calendar.js" %}'></script>
+    <script type="text/javascript" src='{% static "app/scripts/calendarevents.js" %}'></script>
+    <script type="text/javascript" src='{% static "app/scripts/populateagenda.js" %}'></script>
+    <script type="text/javascript">
+        alterafocusmenu('agenda','',''); //registado em function.js
+        var xml_feed = '';
+        var xmlDoc = '{{ agendamentos |escapejs }}';
+        var calendar = null;
+        $(document).ready(function () {
+            calendar = $("#calendar").calendar(
+                    {
+                        modal: "#events-modal",
+                        language: 'pt-BR',
+                        first_day:1 ,
+                        tmpl_path: '{% static "app/calendartemplates/" %}',
+                        events_source: populateAgenda(xmlDoc)
+                    });
+            $('#calendartitle').html(calendar.getTitle());
+        });
+
+    </script>
+{% endblock %}

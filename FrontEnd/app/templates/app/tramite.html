@@ -1,0 +1,264 @@
+{% extends "app/home.html" %}
+{% load staticfiles %}
+
+{% block title %}SGPLP - Trâmites{% endblock %}
+{% block header %}
+<style>
+    th.datepickerGoPrev,
+    th.datepickerGoNext,
+    th.datepickerMonth { background-color: #800000; }
+    th.datepickerGoPrev *,
+    th.datepickerGoNext *,
+    th.datepickerMonth * { color: #FFF!important; }
+    td.datepickerSelected { background-color: #800000!important; }
+    td.datepickerSelected span { color: #FFF; }
+    .ui-icon, .ui-widget-content .ui-icon { background-image: url("/app/image/ui-icons_ffffff_256x240.png")!important; }
+</style>
+{% endblock %}
+{% block menuLeft %}
+<script>
+    var xml_feed = '{{ feed | escapejs }}';
+    var workflow = $.parseJSON('{{ workflow|escapejs }}');
+    if (typeof (Storage) != "undefined") {
+        // Store
+        localStorage.setItem("workflow", JSON.stringify(workflow));
+    }
+    var workflow = $.parseJSON(localStorage.getItem("workflow"));
+
+</script>
+<ul class="gw-nav gw-nav-list menu">
+    <!--<li id="pergunta"><a href="/tperguntas"> <span class="gw-menu-text">PERGUNTAS</span> <b class="gw-arrow icon-arrow-up8"></b></a></li>-->
+    <li id="diploma"><a href="/leis/0"> <span class="gw-menu-text">DIPLOMAS</span></a></li>
+    <!--<li id="peticoes"><a href="/peticoes"> <span class="gw-menu-text">PETIÇÕES</span> <b class="gw-arrow icon-arrow-up8"></b></a></li>
+    <li id="inquerito"><a href="/Inquerito"> <span class="gw-menu-text">INQUERITO PARLAMENTAR</span> <b class="gw-arrow icon-arrow-up8"></b></a></li>
+    <li id="interpelacoes"><a href="/Interpelacoes"> <span class="gw-menu-text">INTERPELAÇÕES</span> <b class="gw-arrow icon-arrow-up8"></b></a></li>-->
+    <li id="calendario"><a href="/Tramites"> <span class="gw-menu-text">TRAMITAÇÃO</span> <b class="gw-arrow icon-arrow-up8"></b></a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="row" id="menu_members">
+    <ul>
+        <li id="membros"><img src='{% static "app/image/img_trans.gif" %}' class="tramiteIcon" />{% block nameIcon %}&nbsp;TRAMITAÇÃO LEGISLATIVA{% endblock %}</li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-lg-12" id="filter">
+        <div class="btn-group dropdown">
+            <a class="btn btn-default dropdown-toggle" 
+               data-toggle="dropdown" href="#" id="documento">Documentos Programados &nbsp; <span class="caret"></span></a>
+            <ul class="dropdown-menu filtroP">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Documentos Programados</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sessões</a></li>
+            </ul>
+        </div>
+        <!--
+        <div class="btn-group dropdown">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" id="tipo">Todas<span class="caret"></span></a>
+            <ul class="dropdown-menu filtroP">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Todas</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Comissões</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Plenário</a></li>
+            </ul>
+        </div>
+        <div class="btn-group dropdown">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" id="agenda">Agendamento para<span class="caret"></span></a>
+            <ul class="dropdown-menu filtroP">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Agendamento para</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Esta Semana</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Última Semana</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Próxima Semana</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Últimos 30 Dias</a></li>
+            </ul>
+        </div>
+        -->
+    </div>
+</div>
+<!--<div class="row nopadding"></div>-->
+    {% block tramiteContent %}
+    <!--<div class="col-lg-12"></div>-->
+    <table class="table table-hover table-striped small table-condensed" id="tableT">
+    <thead>
+        <tr>
+            <th class="col-lg-3">Tipo de documento</th>
+            <th class="col-lg-6">Local</th>
+            <th class="col-lg-3">Agendamento</th>
+        </tr>
+    </thead>
+    <tbody class="tbContent"></tbody>
+</table>
+    <!--pagination -->
+    <p class="memberPagination"></p>
+    {% endblock %}
+{% endblock %}
+
+{% block feed %}
+<div class="row" id="menu_feed">
+    <ul>
+        <li id="destaques"><img src='{% static "app/image/img_trans.gif" %}' class="calendar" />&nbsp;FILTRAGEM ENTRE DATAS</li>
+    </ul>
+</div>
+<div class="row" id="divcalendar">
+    <div class="col-md-12" id="datepicker"></div>
+    <div class="form-horizontal" id="inputFilter">
+        <div class="form-group">
+            <label for="inputDate1" class="form-control-static col-lg-4">Data Inicial:</label>
+            <div class="col-lg-8">
+                <input type="text" id="inputDate1" value="" disabled="" name="q" placeholder="Selecione a data inicial" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputDate2" class="form-control-static col-lg-4">Data Final:</label>
+            <div class="col-lg-8">
+                <input type="text" id="inputDate2" value="" disabled="" name="q" placeholder="Selecione a data final" class="form-control">
+            </div>
+        </div>
+        <div class="col-lg-offset-4 col-lg-8">
+            <input type="button" value="Filtrar" class="btn btn-default filtroP" onclick="this.blur();"><!--class=""-->
+            <input type="button" value="Limpar Filtro" class="btn btn-default" id="cleanFilter" onclick="this.blur();"><!--class=""-->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!--<div class="col-md-12" id="butonFilter"></div>-->
+</div>
+<script>
+    //inicializa paginação da listagem dos Tramites
+    var x = parseInt('{{ TotalDoc|escapejs }}');
+    $(function () {
+        alterafocusmenu('calendario', '', 'tramite'); //registado em function.js
+        $('#tramites').css('font-weight', 'bold');
+
+        $(".dropdown-menu li a").click(function () {
+            var selText = $(this).text();
+            $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' &nbsp; <span class="caret"></span>');
+        });
+
+        $('#datepicker').DatePicker({
+            flat: true,
+            date: [],
+            calendars: 1,
+            mode: 'range',
+            starts: 1,
+            onBeforeShow: function () {
+                $('#inputDate1').DatePickerSetDate($('#inputDate1').val(), true);
+                $('#inputDate2').DatePickerSetDate($('#inputDate2').val(), true);
+            },
+            onChange: function (formated, dates) {
+                var data = formated.toString();
+                data1 = data.split(",");
+                $('#inputDate1').val(data1[0]);
+                $('#inputDate2').val(data1[1]);
+
+                if ($('#closeOnSelect input').attr('checked')) {
+                    $('#inputDate1').DatePickerHide();
+                    $('#inputDate2').DatePickerHide();
+                }
+            }
+        });
+
+        var tableTRAMITE = $('#tableT').dataTable({
+            "bFilter": false,
+            "bLengthChange": false,
+            "info": false,
+            "bRetrieve": true,
+            "bPaginate": false
+        });
+        $('#tableT').find("th").off("click.DT"); //impede tabela de fazer ordenação
+
+        var DocProgramado = '{{ DocProgramado|escapejs }}';
+        var tam = $(DocProgramado).find('status').length;
+        var tipoDoc = $(DocProgramado).find('itemschedule_item_type');
+        var local = $(DocProgramado).find('venueshort_name');
+        var dataInicio = $(DocProgramado).find('sittingstart_date');
+
+        for (i = 0; i < tam; i++) {
+            //inseri dados na tabela versão
+            dataT = dataInicio[i].textContent.split('T');
+
+            data = [workflow[tipoDoc[i].textContent], local[i].textContent, alterFormatData(dataT[0])];
+            tableTRAMITE.fnAddData(data);
+        }
+
+        //ajax que faz pesquisa de tramite
+        Limitepag = 1;//verifica se a paginação é diferente de 1 para atribuir valores ao limite inferior
+        agenda = $('#agenda').text();
+        tipo = $('#tipo').text();
+        start_date = $('#inputDate1').val();
+        end_date = $('#inputDate2').val();
+
+        $('#cleanFilter').click(function () {
+            start_date = $('#inputDate1').val('');
+            end_date = $('#inputDate2').val('');
+            //$('#datepicker').datepicker( 'date', ['28-07-2008', '31-07-2008'] );
+            $('.filtroP').click();
+            var treta = $('#datepicker').DatePickerClear();
+        });
+
+        $('.filtroP').click(function () {
+            documento = $('#documento').text();
+            start_date = $('#inputDate1').val();
+            end_date = $('#inputDate2').val();
+
+            verifyTypeTramite(start_date, end_date, documento, Limitepag);
+
+            $.ajax({
+                url: link,
+                success: function (data) {
+                    priencheTable(data, tDoc, workflow);
+                    configuraPaginacao(x);
+                },
+                error: function (data) {
+                    alert("erro ao devolver valor")
+                }
+            });
+        });
+
+        $('.memberPagination').bootpag({
+            total: x,
+            page: 1,
+            maxVisible: 5,
+            leaps: true,
+            firstLastUse: true,
+            first: '←',
+            last: '→',
+            wrapClass: 'pagination',
+            activeClass: 'active',
+            disabledClass: 'disabled',
+            nextClass: 'next',
+            prevClass: 'prev',
+            lastClass: 'last',
+            firstClass: 'first'
+        }).on("page", function (event, num) {
+            Limitepag = 1;
+            table = $('.tbContent');
+            if (num != 1) {
+                Limitepag = (num * 5) - 6;
+            }
+
+            verifyTypeTramite(start_date, end_date, documento, Limitepag);
+
+            //soma a data atual mas uma semana
+            var StartDate = new Date();
+            var now = Date();
+
+            StartDate.setDate(StartDate.getDate() + 7);
+            now = $.datepicker.formatDate("dd/mm/yy", new Date(now));
+
+            var EndDate = $.datepicker.formatDate("dd/mm/yy", new Date(StartDate));
+
+            $.ajax({
+                url: link,
+                success: function (data) {
+                    $('#tableT').dataTable().fnClearTable();
+                    priencheTable(data, tDoc, workflow);
+                },
+                error: function (data) {
+                    alert("erro ao devolver valor")
+                }
+            });
+        });
+        $.fn.dataTableExt.sErrMode = 'throw'; //prevent datatable to show error
+    });
+</script>
+{% endblock %}
+

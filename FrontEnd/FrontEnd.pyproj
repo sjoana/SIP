@@ -12,8 +12,7 @@
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <StartupFile>manage.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\SILPCache\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <LaunchProvider>Django launcher</LaunchProvider>
     <OutputPath>.</OutputPath>
@@ -27,9 +26,30 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="app\comissao.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\deputado.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\forms.py" />
+    <Compile Include="app\grupopolitico.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\menus.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\ministerio.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\models.py" />
+    <Compile Include="app\server.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\tests.py" />
+    <Compile Include="app\tramites.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
@@ -44,44 +64,269 @@
     <Folder Include="app\migrations\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\calendartemplates\" />
     <Folder Include="app\static\app\content\" />
     <Folder Include="app\static\app\fonts\" />
+    <Folder Include="app\static\app\image\" />
+    <Folder Include="app\static\app\image\banner\" />
+    <Folder Include="app\static\app\image\loaders\" />
     <Folder Include="app\static\app\scripts\" />
+    <Folder Include="app\static\app\scripts\language\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
     <Folder Include="FrontEnd\" />
+    <Folder Include="workflows\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\calendartemplates\day.html" />
+    <Content Include="app\static\app\calendartemplates\events-list.html" />
+    <Content Include="app\static\app\calendartemplates\modal.html" />
+    <Content Include="app\static\app\calendartemplates\month-day.html" />
+    <Content Include="app\static\app\calendartemplates\month.html" />
+    <Content Include="app\static\app\calendartemplates\week-days.html" />
+    <Content Include="app\static\app\calendartemplates\week.html" />
+    <Content Include="app\static\app\calendartemplates\year-month.html" />
+    <Content Include="app\static\app\calendartemplates\year.html" />
+    <Content Include="app\static\app\content\bootstrap-theme.css" />
+    <Content Include="app\static\app\content\bootstrap-theme.css.map" />
+    <Content Include="app\static\app\content\bootstrap-theme.min.css" />
+    <Content Include="app\static\app\content\bootstrap.css" />
+    <Content Include="app\static\app\content\bootstrap.css.map" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\bootstrap_.css" />
+    <Content Include="app\static\app\content\bs_leftnavi.css" />
+    <Content Include="app\static\app\content\calendar.css" />
+    <Content Include="app\static\app\content\calendar.min.css" />
+    <Content Include="app\static\app\content\datepicker.css" />
+    <Content Include="app\static\app\content\jquery-ui.css" />
+    <Content Include="app\static\app\content\style.css" />
+    <Content Include="app\static\app\content\style.css~" />
+    <Content Include="app\static\app\content\styles.css" />
+    <Content Include="app\static\app\fonts\OpenSans" />
+    <Content Include="app\static\app\image\356B.png" />
+    <Content Include="app\static\app\image\40.jpg" />
+    <Content Include="app\static\app\image\83945586.jpg" />
+    <Content Include="app\static\app\image\ancv_brandcenter.png" />
+    <Content Include="app\static\app\image\area_privada.png" />
+    <Content Include="app\static\app\image\Assembleia_Nacional.jpg" />
+    <Content Include="app\static\app\image\bandeira.png" />
+    <Content Include="app\static\app\image\banner\banner1 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner1.JPG" />
+    <Content Include="app\static\app\image\banner\banner2 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner2.JPG" />
+    <Content Include="app\static\app\image\banner\banner3 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner3.JPG" />
+    <Content Include="app\static\app\image\banner\banner4 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner4.JPG" />
+    <Content Include="app\static\app\image\banner\banner5 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner5.JPG" />
+    <Content Include="app\static\app\image\banner\banner6 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner6.JPG" />
+    <Content Include="app\static\app\image\banner\banner7 - Copy.JPG" />
+    <Content Include="app\static\app\image\banner\banner7.JPG" />
+    <Content Include="app\static\app\image\banner\caboverde.jpg" />
+    <Content Include="app\static\app\image\banner\caboverde_Mindelo.jpg" />
+    <Content Include="app\static\app\image\banner\caboverde_praia.jpg" />
+    <Content Include="app\static\app\image\banner_right.png" />
+    <Content Include="app\static\app\image\barca_cv.png" />
+    <Content Include="app\static\app\image\boton_silp-1.png" />
+    <Content Include="app\static\app\image\boton_silp-2.png" />
+    <Content Include="app\static\app\image\boton_silp-61.png" />
+    <Content Include="app\static\app\image\boton_silp-9.png" />
+    <Content Include="app\static\app\image\caboverde.jpg" />
+    <Content Include="app\static\app\image\calendario_ancv.png" />
+    <Content Include="app\static\app\image\cv.jackbanner.png" />
+    <Content Include="app\static\app\image\cv.jackbanner_.png" />
+    <Content Include="app\static\app\image\cvjackbanner.png" />
+    <Content Include="app\static\app\image\dark_wood.png" />
+    <Content Include="app\static\app\image\destaque1.png" />
+    <Content Include="app\static\app\image\destaque2.png" />
+    <Content Include="app\static\app\image\destaque3.png" />
+    <Content Include="app\static\app\image\destaque4.png" />
+    <Content Include="app\static\app\image\destaque5.png" />
+    <Content Include="app\static\app\image\destaques.png" />
+    <Content Include="app\static\app\image\feed_news.png" />
+    <Content Include="app\static\app\image\feed_sprite.png" />
+    <Content Include="app\static\app\image\FlagIcon22.ico" />
+    <Content Include="app\static\app\image\FlagIcon23.ico" />
+    <Content Include="app\static\app\image\foto.jpg" />
+    <Content Include="app\static\app\image\homebutton_sprite.png" />
+    <Content Include="app\static\app\image\icons_home.png" />
+    <Content Include="app\static\app\image\icon_rss.png" />
+    <Content Include="app\static\app\image\img_trans.gif" />
+    <Content Include="app\static\app\image\jovens_1600x1200.jpg" />
+    <Content Include="app\static\app\image\loaders\loader1.gif" />
+    <Content Include="app\static\app\image\loaders\loader10.gif" />
+    <Content Include="app\static\app\image\loaders\loader11.gif" />
+    <Content Include="app\static\app\image\loaders\loader12.gif" />
+    <Content Include="app\static\app\image\loaders\loader13.gif" />
+    <Content Include="app\static\app\image\loaders\loader14.gif" />
+    <Content Include="app\static\app\image\loaders\loader15.gif" />
+    <Content Include="app\static\app\image\loaders\loader16.gif" />
+    <Content Include="app\static\app\image\loaders\loader17.gif" />
+    <Content Include="app\static\app\image\loaders\loader18.gif" />
+    <Content Include="app\static\app\image\loaders\loader19.gif" />
+    <Content Include="app\static\app\image\loaders\loader2.gif" />
+    <Content Include="app\static\app\image\loaders\loader20.gif" />
+    <Content Include="app\static\app\image\loaders\loader21.gif" />
+    <Content Include="app\static\app\image\loaders\loader22.gif" />
+    <Content Include="app\static\app\image\loaders\loader23.gif" />
+    <Content Include="app\static\app\image\loaders\loader24.gif" />
+    <Content Include="app\static\app\image\loaders\loader25.gif" />
+    <Content Include="app\static\app\image\loaders\loader26.gif" />
+    <Content Include="app\static\app\image\loaders\loader27.gif" />
+    <Content Include="app\static\app\image\loaders\loader28.gif" />
+    <Content Include="app\static\app\image\loaders\loader29.gif" />
+    <Content Include="app\static\app\image\loaders\loader3.gif" />
+    <Content Include="app\static\app\image\loaders\loader30.gif" />
+    <Content Include="app\static\app\image\loaders\loader4.gif" />
+    <Content Include="app\static\app\image\loaders\loader5.gif" />
+    <Content Include="app\static\app\image\loaders\loader6.gif" />
+    <Content Include="app\static\app\image\loaders\loader7.gif" />
+    <Content Include="app\static\app\image\loaders\loader8.gif" />
+    <Content Include="app\static\app\image\loaders\loader9.gif" />
+    <Content Include="app\static\app\image\Middle.jpg" />
+    <Content Include="app\static\app\image\noImage.jpg" />
+    <Content Include="app\static\app\image\nophotoF.jpg" />
+    <Content Include="app\static\app\image\nophotoM.jpg" />
+    <Content Include="app\static\app\image\Pdf-Icon.png" />
+    <Content Include="app\static\app\image\pesq_acancad.png" />
+    <Content Include="app\static\app\image\silp_icon.png" />
+    <Content Include="app\static\app\image\silp_icon4.png" />
+    <Content Include="app\static\app\image\slide-bg.png" />
+    <Content Include="app\static\app\image\stock-footage-flying-flag-of-cape-verde-looped.jpg" />
+    <Content Include="app\static\app\image\TANCV.jpg" />
+    <Content Include="app\static\app\image\TANCV.png" />
+    <Content Include="app\static\app\image\TANCVf.png" />
+    <Content Include="app\static\app\image\tick.png" />
+    <Content Include="app\static\app\image\TOPANCVFLAG.jpg" />
+    <Content Include="app\static\app\image\TOPANCVFLAG.png" />
+    <Content Include="app\static\app\image\TOPANCVFLAGf.png" />
+    <Content Include="app\static\app\image\totop.jpg" />
+    <Content Include="app\static\app\image\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="app\static\app\image\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="app\static\app\image\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="app\static\app\image\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="app\static\app\image\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="app\static\app\image\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="app\static\app\image\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="app\static\app\image\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="app\static\app\image\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="app\static\app\image\ui-icons_222222_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_228ef1_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_2e83ff_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_454545_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_888888_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_ef8c08_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_ffd27a_256x240.png" />
+    <Content Include="app\static\app\image\ui-icons_ffffff_256x240.png" />
+    <Content Include="app\static\app\scripts\app.js" />
+    <Content Include="app\static\app\scripts\bootpag.js" />
+    <Content Include="app\static\app\scripts\bootstrap-select.js" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\bs_leftnavi.js" />
+    <Content Include="app\static\app\scripts\calendar.js" />
+    <Content Include="app\static\app\scripts\calendar.min.js" />
+    <Content Include="app\static\app\scripts\calendarevents.js" />
+    <Content Include="app\static\app\scripts\dataTables.bootstrap.js" />
+    <Content Include="app\static\app\scripts\DataTables.min.js" />
+    <Content Include="app\static\app\scripts\datepicker.js" />
+    <Content Include="app\static\app\scripts\function.js" />
+    <Content Include="app\static\app\scripts\jquery-ui.js" />
+    <Content Include="app\static\app\scripts\jQuery.js" />
+    <Content Include="app\static\app\scripts\js.cookie.js" />
+    <Content Include="app\static\app\scripts\jstz.min.js" />
+    <Content Include="app\static\app\scripts\language\bs-BA.js" />
+    <Content Include="app\static\app\scripts\language\cs-CZ.js" />
+    <Content Include="app\static\app\scripts\language\da-DK.js" />
+    <Content Include="app\static\app\scripts\language\de-AT.js" />
+    <Content Include="app\static\app\scripts\language\de-DE.js" />
+    <Content Include="app\static\app\scripts\language\el-GR.js" />
+    <Content Include="app\static\app\scripts\language\es-ES.js" />
+    <Content Include="app\static\app\scripts\language\es-MX.js" />
+    <Content Include="app\static\app\scripts\language\fi-FI.js" />
+    <Content Include="app\static\app\scripts\language\fr-FR.js" />
+    <Content Include="app\static\app\scripts\language\hr-HR.js" />
+    <Content Include="app\static\app\scripts\language\it-IT.js" />
+    <Content Include="app\static\app\scripts\language\ja-JP.js" />
+    <Content Include="app\static\app\scripts\language\ko-KR.js" />
+    <Content Include="app\static\app\scripts\language\nl-NL.js" />
+    <Content Include="app\static\app\scripts\language\no-NO.js" />
+    <Content Include="app\static\app\scripts\language\pl-PL.js" />
+    <Content Include="app\static\app\scripts\language\pt-BR.js" />
+    <Content Include="app\static\app\scripts\language\ro-RO.js" />
+    <Content Include="app\static\app\scripts\language\ru-RU.js" />
+    <Content Include="app\static\app\scripts\language\sl-SL.js" />
+    <Content Include="app\static\app\scripts\language\sv-SE.js" />
+    <Content Include="app\static\app\scripts\language\template.js" />
+    <Content Include="app\static\app\scripts\language\tr-TR.js" />
+    <Content Include="app\static\app\scripts\language\zh-CN.js" />
+    <Content Include="app\static\app\scripts\npm.js" />
+    <Content Include="app\static\app\scripts\populateagenda.js" />
+    <Content Include="app\static\app\scripts\priencheTramite.js" />
+    <Content Include="app\static\app\scripts\readmore.js" />
+    <Content Include="app\static\app\scripts\script.js" />
+    <Content Include="app\static\app\scripts\underscore-min.js" />
+    <Content Include="app\static\app\scripts\underscore.js" />
+    <Content Include="app\templates\app\cabecalho.html" />
+    <Content Include="app\templates\app\calendar.html" />
+    <Content Include="app\templates\app\CommittesMembers.html" />
+    <Content Include="app\templates\app\DocAssociado.html" />
+    <Content Include="app\templates\app\docIniciativa.html" />
+    <Content Include="app\templates\app\docInquerito.html" />
+    <Content Include="app\templates\app\docInterpelacoes.html" />
+    <Content Include="app\templates\app\doclei.html" />
+    <Content Include="app\templates\app\docLeiModal.html" />
+    <Content Include="app\templates\app\docpergunta.html" />
+    <Content Include="app\templates\app\docPerguntaModal.html" />
+    <Content Include="app\templates\app\docpeticao.html" />
+    <Content Include="app\templates\app\GrupoPolitico.html" />
+    <Content Include="app\templates\app\grupos_politicos.html" />
+    <Content Include="app\templates\app\home.html" />
+    <Content Include="app\templates\app\home.html~" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\Iniciativas.html" />
+    <Content Include="app\templates\app\inquerito_parlamentar.html" />
+    <Content Include="app\templates\app\interpelacoes.html" />
+    <Content Include="app\templates\app\leis.html" />
+    <Content Include="app\templates\app\members.html" />
+    <Content Include="app\templates\app\Ministeries.html" />
+    <Content Include="app\templates\app\perguntas.html" />
+    <Content Include="app\templates\app\pesquisa.html" />
+    <Content Include="app\templates\app\pesquisa_avacada.html" />
+    <Content Include="app\templates\app\peticoes.html" />
+    <Content Include="app\templates\app\tramite.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
-    <Content Include="app\static\app\content\bootstrap.css" />
-    <Content Include="app\static\app\content\bootstrap.min.css" />
-    <Content Include="app\static\app\content\site.css" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="app\static\app\scripts\bootstrap.js" />
-    <Content Include="app\static\app\scripts\bootstrap.min.js" />
-    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
-    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
-    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
-    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
-    <Content Include="app\static\app\scripts\jquery.validate.js" />
-    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
-    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
-    <Content Include="app\static\app\scripts\respond.js" />
-    <Content Include="app\static\app\scripts\respond.min.js" />
-    <Content Include="app\static\app\scripts\_references.js" />
-    <Content Include="app\templates\app\about.html" />
-    <Content Include="app\templates\app\contact.html" />
-    <Content Include="app\templates\app\index.html" />
-    <Content Include="app\templates\app\layout.html" />
-    <Content Include="app\templates\app\login.html" />
-    <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="workflows\apreciacao_programa_governo.xml" />
+    <Content Include="workflows\assembly_question.xml" />
+    <Content Include="workflows\debate_com_ministros.xml" />
+    <Content Include="workflows\inqueritos_parlamentares.xml" />
+    <Content Include="workflows\interpelacoes.xml" />
+    <Content Include="workflows\orcamento_estado.xml" />
+    <Content Include="workflows\orcamento_retificativo.xml" />
+    <Content Include="workflows\pergunta_escrita.xml" />
+    <Content Include="workflows\pergunta_oral.xml" />
+    <Content Include="workflows\petition.xml" />
+    <Content Include="workflows\projeto_lei.xml" />
+    <Content Include="workflows\proj_res_assent_aus_pr.xml" />
+    <Content Include="workflows\proposta_lei.xml" />
+    <Content Include="workflows\proposta_lei_plano.xml" />
+    <Content Include="workflows\prop_lei_aut_legislativa.xml" />
+    <Content Include="workflows\prop_res_aprov_tratados.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">

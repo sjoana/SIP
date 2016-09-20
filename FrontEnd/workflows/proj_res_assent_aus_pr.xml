@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<workflow title="Assentimento para ausência do Presidente da República do Territorio Nacional"
+    description="Assentimento para ausência do Presidente da República do Territorio Nacional . Regimento [Art.º 184º] Constituição da República (CRDTL) [Art.º  80º e Art.º  95º, nº3, h)]"
+    permission_actions=".View .Edit .Add .Delete"
+    >
+  <!--f-07-apreciacaodoprogramadogoverno.vsdx-->
+  <!-- global grants -->
+  <allow permission=".Add" roles="
+            ClerkAssembly
+            MemberAssembly
+        " />
+
+
+  <!-- features -->
+  <feature name="audit" enabled="true" />
+  <feature name="version" enabled="true" />
+  <feature name="attachment" enabled="true" />
+  <feature name="event" enabled="true" />
+  <feature name="signatory" enabled="false"/>
+  <feature name="schedule" enabled="true">
+    <parameter name="schedulable_states" value="comissao_permanente_agendada plenario_agendado" />
+    <parameter name="scheduled_states" value="comissao_permanente plenario" />
+  </feature>
+  <feature name="workspace" enabled="true" />
+  <feature name="notification" enabled="true" />
+  <feature name="email" enabled="true" />
+  <feature name="download" enabled="true" />
+  <feature name="group_assignment" enabled="true" />
+
+  <!-- workflow facets -->
+  <facet name="draft">
+    <allow permission=".View" roles="Drafter Anonymous" />
+    <allow permission=".Edit" roles="Drafter" />
+    <allow permission=".Delete" roles="Drafter" />
+  </facet>
+  <facet name="redraft">
+    <allow permission=".View" roles="Drafter Owner" />
+    <allow permission=".Edit" roles="Drafter" />
+  </facet>
+  <facet name="view_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly " />
+  </facet>
+  <facet name="edit_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="edit_Speaker">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="SpeakerAssembly" />
+  </facet>
+  <facet name="public_edit_Clerk">
+    <allow permission=".View" roles="Anonymous" />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="public">
+    <allow permission=".View" roles="Anonymous" />
+  </facet>
+
+  <!-- Inicio - apresentação MESA -->
+  <state id="rascunho" title="Inicial" actions="version">
+    <facet ref=".draft" />
+    <facet ref="attachment.add_drafter" />
+    <facet ref="event.add_clerk" />
+
+  </state>
+  <state id="mesa" title="Mesa"
+          actions="version" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+
+    <facet ref="group_assignment.add_internal" />
+  </state>
+  
+  <!-- apreciacao plenario -->
+  <state id="plenario_agendado" title="Agendado Plenário para Debate e Votação" actions="version" permissions_from_state="mesa" />
+  <state id="plenario_adiado" title="Adiado Plenário para Debate e Votação" actions="version" permissions_from_state="plenario_agendado" />
+  <state id="plenario" title="Debate no Plenário [Art.º 185.º do RPN]" actions="version" permissions_from_state="plenario_agendado" />
+
+ <!--comissão permanente-->
+  <state id="comissao_permanente_agendada" title="Agendada Comissão Permanente para Debate e Votação [Art.º 80.º, n.º 1 da CRDTL e Art.º 184.º, n.º 1 do RPN]" actions="version" permissions_from_state="mesa" />
+  <state id="comissao_permanente_adiada" title="Adiada Comissão Permanente para Debate e Votação" actions="version" permissions_from_state="plenario_agendado" />
+  <state id="comissao_permanente" title="Debate e Votação em Comissão Permanente [Art.º 40.º, e) do RPN]" actions="version" permissions_from_state="plenario_agendado" />
+
+  <!--resultados da votação-->
+  <state id="pedido_ausencia_autorizado" title="Pedido Aprovado [Art.º 185.º, n.º 2 do RPN]" actions="version" permissions_from_state="plenario_agendado" />
+  <state id="pedido_ausencia_rejeitado" title="Pedido Rejeitado [Art.º 185.º, n.º 2 do RPN]" actions="version" permissions_from_state="plenario_agendado" />
+
+  <!--PPN e publicação-->
+  <state id="espera_assinaturaPPN" title="PPN assina resolução" actions="version" permissions_from_state="mesa" />
+  <state id="publicacao_jornal_republica" title="Publicação no Jornal da República" actions="version" permissions_from_state="plenario_agendado" />
+  <state id="comunicacao_decisao_PR" title="Decisão comunicada ao PR" actions="version" permissions_from_state="plenario_agendado" />
+
+  <!--Estados terminais -->
+  <!-- Final dos estados-->
+  <!-- workflow transitions -->
+  <!-- inicio -->
+  <transition title="Envio de mensagem do PR"
+    source=""
+    destination="rascunho"
+    trigger="automatic"
+    require_confirmation="true"
+    />
+  <transition title="Envio de mensagem do PR [Art. 184.º, n.º1 do RPN]"
+      source="rascunho"
+      destination="mesa"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+  />
+ 
+  <!-- plenario -->
+  <transition title="Enviar para Plenário para Debate e Votação"
+    source="plenario_adiado"
+    destination="plenario_agendado"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+
+  <transition title="Distribuir às Bancadas e Agendar Plenário para Debate e Votação"
+    source="mesa"
+    destination="plenario_agendado"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+
+  <transition title="Adiar do Plenário"
+source="plenario_agendado"
+  destination="plenario_adiado"
+  trigger="manual"
+  roles="ClerkAssembly"
+  require_confirmation="true"
+  condition=""
+   />
+
+  <transition title="Debate e Votação no Plenário"
+      source="plenario_agendado"
+      destination="plenario"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+<!--Comissão permanente-->
+  <transition title="Agendar Debate e Votação em Comissão Permanente"
+    source="mesa comissao_permanente_adiada"
+    destination="comissao_permanente_agendada"
+   trigger="manual"
+   roles="ClerkAssembly"
+   require_confirmation="true"
+   condition=""
+   />
+  <transition title="Adiar Debate e Votação em Comissão Permanente"
+    source="comissao_permanente_agendada"
+    destination="comissao_permanente_adiada"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <transition title="Debate e Votação em Comissão Permanente"
+    source="comissao_permanente_agendada"
+    destination="comissao_permanente"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <!--decisões-->
+  <transition title="Pedido Aprovado"
+    source="plenario comissao_permanente"
+    destination="pedido_ausencia_autorizado"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <transition title="Pedido Rejeitado"
+    source="plenario comissao_permanente"
+    destination="pedido_ausencia_rejeitado"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+<!--PPN e publicação -->
+  <transition title="Enviar ao PPN para Assinatura"
+    source="pedido_ausencia_rejeitado pedido_ausencia_autorizado"
+    destination="espera_assinaturaPPN"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <transition title="Enviar para Publicação no Jornal da República"
+    source="comunicacao_decisao_PR"
+    destination="publicacao_jornal_republica"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <transition title="Comunicar decisão ao PR"
+    source="espera_assinaturaPPN"
+    destination="comunicacao_decisao_PR"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+</workflow>
+

@@ -1,0 +1,120 @@
+{% extends "app/members.html" %}
+{% load staticfiles %}
+{% block title %}SGPLP - Iniciativas{% endblock %}
+
+
+{% block contentSuper %}
+
+    <div class="col-md-10 noap">
+    <div class="row contentColor padd">
+        <div class="row" id="menu_feed">
+            <ul>
+                <li id="destaques"><img src='{% static "app/image/img_trans.gif" %}' class="peticaoIcon" />INICIATIVAS</li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover" id="iniciativa">
+                    <thead>
+                    <tr>
+                        <th class="col-lg-3">Título</th>
+                        <th class="col-lg-7">Subtítulo</th>
+                        <th class="col-lg-2">Data</th>
+                        <!--<th class="col-lg-10">Descrição</th><th class="col-lg-2" id="datadocumento">Data</th>-->
+                    </tr>
+                    </thead>
+                    <tbody id="Inquerito"></tbody>
+                </table>
+                <!--pagination -->
+                <p class="PeticoesPG"></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        var xml_feed = '';
+        alterafocusmenu('deputado','',''); //registado em function.js
+
+        feed = '{{ XMLdata|escapejs }}';
+        IDLegislatura = '{{ IDLegislatura|escapejs }}';
+        IDMember = '{{ IDMember|escapejs }}'
+
+        //var tituloDoc = $(feed).find('item doctitle');
+        //var dataDoc = $(feed).find('item docstatus_date');
+        //var idDoc = $(feed).find('item docdoc_id');
+        content = $('#Inquerito');
+        //for(var i=0; i<$(feed).find('item').length;i++){
+        //    var dataDocObj = $(dataDoc[i]).text().split('T');
+        //    content.append('<tr>'+
+        //    '<td><i class="fa fa-file-o"></i> <a href="/doclei/' + $(idDoc[i]).text() + '">' + $(tituloDoc[i]).text() + '</a></td>' +
+        //    '<td id="datadocumento">'+dataDocObj[0]+'</td>' +
+        //    '</tr>');
+        //}
+        showTramite(feed, 'docLei', content);
+        var elementsPerPage = 10;
+        //inicializa paginação da listagem dos deputados
+        var totalPages = Math.ceil(parseInt('{{ TotalIniciativa|escapejs }}') / elementsPerPage);
+        if (totalPages == 1)
+            $('.PeticoesPG').addClass('hide');
+        else $('.PeticoesPG').removeClass('hide');
+        $(function(){
+            $('.PeticoesPG').bootpag({
+                total: totalPages,
+                page: 1,
+                maxVisible: 10,
+                leaps: true,
+                firstLastUse: true,
+                first: '←',
+                last: '→',
+                wrapClass: 'pagination',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first'
+            }).on("page", function(event, num){
+                //verifica se a paginação é diferente de 1 para atribuir valores ao limite inferior
+                Limitepag = 1;
+                if (num != 1){
+                    Limitepag = (num-1) * elementsPerPage;
+                }
+
+                div_html = $('#Inquerito');
+                link = "/ListaAllTramite/"+Limitepag+"/" + elementsPerPage+"/"+IDLegislatura+"/"+IDMember;
+
+                $.ajax({
+                    url: link,
+                    success: function(data) {
+                        div_html.empty();
+                        var xml_data = data;
+
+                        showTramite(xml_data, 'docLei', content)/* prienche os dados na tabela cujo id é:Inquerito (xml_data - xml e url)*/
+                    },
+                    error:function(data) {
+                        alert("erro ao devolver valor")
+                    }
+                });
+
+            });
+        });
+
+        $.ajax({
+            url: "/webservices/getuser/" + IDMember,
+            success: function (data) {
+                var theUser = JSON.parse(data)[0];
+                var name = '<div style="float: left"><img src="/app/image/img_trans.gif" class="peticaoIcon" /></div><div style="float: left"> ';
+                name += theUser.user_first_name.trim();
+                if (theUser.user_middle_name != null)
+                    name += " " + theUser.user_middle_name.trim();
+                name += " " + theUser.user_last_name.trim();
+
+                name += '<br/><span class="small">' + theUser.user_title.trim() + "</span></div>";
+                $("#destaques").html(name);
+            },
+            error: function (data) { alert("erro ao devolver valor"); }
+        });
+    </script>
+{% endblock %}
+

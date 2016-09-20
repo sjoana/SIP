@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% extends "app/index.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <script>
+        $(function(){
+            content = $('.resultadoPesquisa');
+            content.empty();
+        });
+    </script>
+
+    <div class="row" id="menu_members">
+        <ul>
+            <li id="membros"><img src='{% static "app/image/img_trans.gif" %}' class="tramiteIcon" />{% block nameIcon %}&nbsp;RESULTADO PESQUISA{% endblock %}</li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <table class="table table-horizontal">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>            
+            <tbody class="resultadoPesquisa" id="result">
+                {{ XMLdata }}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block feed %}
+    <div class="row" id="menu_feed">
+        <ul>
+            <li id="destaques"><img src='{% static "app/image/img_trans.gif" %}' class="destaqueIcon" />&nbsp;DESTAQUES</li>
+        </ul>
+    </div>
+    <div class="mini-layout fluid content_feed"></div>
+
+    <div class="modal fade" id="noticia">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modaltitle" style="font-weight: bold;"></h4>
+                </div>
+                <div class="modal-body" id="modalnews" style="text-align:justify;overflow-y: scroll;overflow-x:hidden; height:450px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<script>
+    var xml_feed = '{{ feed |escapejs }}';
+</script>
+
+{% endblock %}

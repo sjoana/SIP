@@ -1,0 +1,38 @@
+{% extends "app/members.html" %}
+{% block title %}Bancadas Parlamentares{% endblock %}
+{% block nameIcon %}&nbsp;BANCADA{% endblock %}
+
+{% block Membros %}
+
+<div id="actionGroup">
+    <button id="ativo">Activo</button>
+    <button id="desable">Dissolvido</button>
+</div>
+<div id="accordion"></div>
+<script>
+    var xml = ''
+    $(function () {
+        alterafocusmenu('deputado', 'GrupoPolitico', ''); //registado em function.js
+
+        var div_html = $('#accordion');
+        xml = '{{ lista |escapejs }}';
+        var tam = $(xml).find('item').length;
+
+        for (i = 0; i < tam; i++) {
+            var GroupStatus = $($($(xml).find('item')[i]).find('group_status')).text();
+            if (GroupStatus == 'active') {
+                var Group_name = $($($(xml).find('item')[i]).find('group_full_name')).text();
+                var Group_body = $($($(xml).find('item')[i]).find('group_body')).text();
+
+                div_html.append(
+                        '<h3 id="accordion">' + Group_name + '</h3>' +
+                        '<div>' +
+                        '<p style="text-align: justify;">' +
+                        Group_body +
+                        '</p>' +
+                        '</div>');
+            }
+        }
+    });
+</script>
+{% endblock %}

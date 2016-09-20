@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<workflow title="Apreciação do Programa do Governo"
+    description="Apreciação do Programa do Governo . Regimento (RPN) [arts. 134º a 136º] . Constituição da República (CRDTL) . [Art.º 108º, nº2 e Art.º 109º, nº1]"
+    permission_actions=".View .Edit .Add .Delete"
+    >
+  <!--f-07-apreciacaodoprogramadogoverno.vsdx-->
+  <!-- global grants -->
+  <allow permission=".Add" roles="
+            ClerkAssembly
+            MemberAssembly
+        " />
+
+
+  <!-- features -->
+  <feature name="audit" enabled="true" />
+  <feature name="version" enabled="true" />
+  <feature name="attachment" enabled="true" />
+  <feature name="event" enabled="true" />
+  <feature name="signatory" enabled="false"/>
+  <feature name="schedule" enabled="true">
+    <parameter name="schedulable_states" value="CRBP_agendada plenario_agendado" />
+    <parameter name="scheduled_states" value="CRBP plenario" />
+  </feature>
+  <feature name="workspace" enabled="true" />
+  <feature name="notification" enabled="true" />
+  <feature name="email" enabled="true" />
+  <feature name="download" enabled="true" />
+  <feature name="group_assignment" enabled="true" />
+
+  <!-- workflow facets -->
+  <facet name="draft">
+    <allow permission=".View" roles="Drafter Anonymous" />
+    <allow permission=".Edit" roles="Drafter" />
+    <allow permission=".Delete" roles="Drafter" />
+  </facet>
+
+
+
+  <facet name="redraft">
+    <allow permission=".View" roles="Drafter Owner" />
+    <allow permission=".Edit" roles="Drafter" />
+  </facet>
+  <facet name="view_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly " />
+  </facet>
+  <facet name="edit_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="edit_Speaker">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="SpeakerAssembly" />
+  </facet>
+  <facet name="public_edit_Clerk">
+    <allow permission=".View" roles="Anonymous" />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="public">
+    <allow permission=".View" roles="Anonymous" />
+  </facet>
+
+  <!-- Inicio - apresentação MESA -->
+  <state id="rascunho" title="Inicial" actions="version">
+    <facet ref=".draft" />
+    <facet ref="attachment.add_drafter" />
+    <facet ref="event.add_clerk" />
+  </state>
+  <state id="mesa" title="Mesa"
+          actions="version" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+    <facet ref="group_assignment.add_internal" />
+  </state>
+
+
+
+  <state id="CRBP_agendada" title="Agendada Conferência dos Representantes das Bancadas Parlamentares" actions="version" permissions_from_state="rascunho" />
+  <state id="CRBP_adiada" title="Adiada Conferência dos Representantes das Bancadas Parlamentares" actions="version" permissions_from_state="rascunho" />
+  <state id="CRBP" title="Conferência dos Representantes das Bancadas Parlamentares [Art.º 135.º, n.º 3 do RPN]" actions="version" permissions_from_state="rascunho" />
+
+  <!-- apreciacao plenario -->
+  <state id="plenario_agendado" title="Agendado Plenário para Debate" actions="version" permissions_from_state="CRBP_agendada" />
+  <state id="plenario_adiado" title="Adiado Plenário para Debate" actions="version" permissions_from_state="CRBP_agendada" />
+  <state id="plenario" title="Plenário para Debate [Art.º 109, n.º 2 da CRDTL] [Art.º 135.º, n.º 4 do RPN]" actions="version" permissions_from_state="CRBP_agendada" />
+
+  <!-- moções -->
+  <state id="votos_apresentados" title="Apresentadas para Votação Moções de Rejeição e/ou Votos de Confiança [Art.º 109, n.º 2 da CRDTL] [Art.º 136.º do RPN]" actions="version" permissions_from_state="CRBP_agendada" />
+
+  <!--comunicação PPN a PR-->
+  <state id="comunicacao_pr" title="Rejeião comunicada pelo PPN ao PR [Art.º 136.º do RPN]" actions="version" permissions_from_state="CRBP_agendada" />
+
+  <state id="publicado_jr" title="Publicado no Jornal da República [Art.º 5.º, n.º 2, n), da Lei n.º 1/2002, de 7 de agosto]" actions="version" permissions_from_state="CRBP_agendada" />
+
+
+
+  <!--Estados terminais -->
+
+  <!-- Final dos estados-->
+  <!-- workflow transitions -->
+  <!-- inicio -->
+  <transition title="Apresentar Programa do Governo [Art.º 135.º n.º 1 do RPN e Art.º 139.º, n.º 1 da CRDTL]"
+      source=""
+      destination="rascunho"
+      trigger="automatic"
+      require_confirmation="true"
+    />
+
+  <transition title="Apresentar Programa do Governo"
+      source="rascunho"
+      destination="mesa"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <!-- CRBP -->
+  <transition title="Agendar CRBP"
+      source="mesa CRBP_adiada"
+      destination="CRBP_agendada"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <transition title="Adiar CRBP"
+      source="CRBP_agendada"
+      destination="CRBP_adiada"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <transition title="CRBP"
+      source="CRBP_agendada"
+      destination="CRBP"
+      trigger="manual"
+      roles="Drafter"
+      require_confirmation="true"
+    />
+
+  <!-- generalidade -->
+  <transition title="Agendar Plenário para Debate"
+      source="CRBP plenario_adiado"
+      destination="plenario_agendado"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+  <transition title="Adiar do Plenário"
+      source="plenario_agendado"
+      destination="plenario_adiado"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+  <transition title="Plenário para Debate [Art.º 109.º, n.º 2 da CRDTL] [Art.º 135.º, n.º 4 do RPN]"
+      source="plenario_agendado"
+      destination="plenario"
+      trigger="manual"
+      roles="ClerkAssembly"
+      require_confirmation="true"
+      condition=""
+   />
+
+  <transition title="Programa não rejeitado"
+     source="plenario votos_apresentados"
+     destination="publicado_jr"
+     trigger="manual"
+     roles="ClerkAssembly"
+     require_confirmation="true"
+     condition=""
+   />
+
+
+  <!-- moções-->
+  <transition title="Apresentar Moções de Rejeição e/ou Votos de Confiança"
+    source="plenario"
+    destination="votos_apresentados"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+
+  <transition title="Programa rejeitado"
+    source="votos_apresentados"
+    destination="comunicacao_pr"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+</workflow>
+

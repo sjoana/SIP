@@ -1,0 +1,786 @@
+<?xml version="1.0"?>
+<workflow title="Proposta de Lei do Orçamento de Estado Retificativo"
+    description="Proposta de Lei do Orçamento de Estado Retificativo . Art.º 162.º do RPN"
+    permission_actions=".View .Edit .Add .Delete"
+    >
+  <!--a-17-Orcamento.Geral.do.Estado.vsdx-->
+  <!-- global grants -->
+  <allow permission=".Add" roles="
+            ClerkAssembly
+            MemberAssembly
+        " />
+
+  <!-- features -->
+  <feature name="audit" enabled="true" />
+  <feature name="version" enabled="true" />
+  <feature name="attachment" enabled="true" />
+  <feature name="event" enabled="true" />
+  <feature name="signatory" enabled="false"/>
+  <feature name="schedule" enabled="true">
+    <parameter name="schedulable_states" value="comissao_especialidade_agendado comissao_parecer_agendado comissao_redacao_final_agendado plenario_avocacao_agendado_fase2 plenario_discussao_generalidade_agendado plenario_processo_urgencia_agendado plenario_reclamacao_agendado plenario_votacao_final_agendado plenario_votacao_recursos_agendado" />
+    <parameter name="scheduled_states" value="comissao_especialidade comissao_parecer comissao_redacao_final plenario_avocacao_fase2 plenario_discussao_generalidade plenario_processo_urgencia plenario_reclamacao plenario_votacao_final plenario_votacao_recursos" />
+  </feature>
+  <feature name="workspace" enabled="true" />
+  <feature name="notification" enabled="true" />
+  <feature name="email" enabled="true" />
+  <feature name="download" enabled="true" />
+  <feature name="group_assignment" enabled="true" />
+
+  <!-- workflow facets -->
+  <facet name="draft">
+    <allow permission=".View" roles="Drafter Anonymous" />
+    <allow permission=".Edit" roles="Drafter" />
+    <allow permission=".Delete" roles="Drafter" />
+  </facet>
+
+
+
+  <facet name="redraft">
+    <allow permission=".View" roles="Drafter Owner" />
+    <allow permission=".Edit" roles="Drafter" />
+  </facet>
+  <facet name="view_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly " />
+  </facet>
+  <facet name="edit_Clerk">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="edit_Speaker">
+    <allow permission=".View" roles="Owner ClerkAssembly SpeakerAssembly " />
+    <allow permission=".Edit" roles="SpeakerAssembly" />
+  </facet>
+  <facet name="public_edit_Clerk">
+    <allow permission=".View" roles="Anonymous" />
+    <allow permission=".Edit" roles="ClerkAssembly" />
+  </facet>
+  <facet name="public">
+    <allow permission=".View" roles="Anonymous" />
+  </facet>
+
+
+  <state id="rascunho" title="Inicial" actions="version">
+    <facet ref=".draft" />
+    <facet ref="attachment.add_drafter" />
+    <facet ref="event.add_clerk" />
+
+  </state>
+
+  <!-- Mesa -->
+  <state id="mesa" title="Mesa"
+          actions="version" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+
+    <facet ref="group_assignment.add_internal" />
+  </state>
+  <state id="admissaoPan" title="Admitido pelo PPN [Art.º 163.º do RPN]"
+          actions="set_doc_registry_number set_doc_type_number version" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+
+    <facet ref="group_assignment.add_internal" />
+  </state>
+  <state id="rejeitado_PAN" title="Rejeição da Admissão da Iniciativa">
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+    <facet ref="group_assignment.add_internal" />
+  </state>
+  <state id="rejeitado_PAN_req" title="Iniciativa Rejeitada por Falta de Requisitos [Art.º n.º 98.º n.º 3 do RPN]">
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+    <facet ref="group_assignment.add_internal" />
+  </state>
+
+  <!-- recurso admissão -->
+  <state id="recursos_apresentados" title="Recurso sobre a decisão do PPN [Art.º 99.º n.º 3 do RPN]" >
+    <facet ref=".edit_Speaker" />
+    <facet ref="attachment.add_speaker" />
+    <facet ref="event.add_speaker" />
+    <facet ref="group_assignment.add_internal" />
+  </state>
+
+  <state id="plenario_votacao_recursos_agendado" title="Agendado Plenário para Leitura e Votação do Recurso" permissions_from_state="recursos_apresentados" />
+  <state id="plenario_votacao_recursos_adiado" title="Adiado Plenário para Leitura e Votação do Recurso" permissions_from_state="recursos_apresentados" />
+  <state id="plenario_votacao_recursos" title="Plenário para Leitura e Votação do Recurso [Art.º 99.º n.º 4 do RPN]" actions="version" permissions_from_state="recursos_apresentados" />
+
+  <!-- Fim recursos-->
+
+
+  <!-- Parecer comissão finanças-->
+  <state id="iniciativa_admitida" title="Iniciativa admitida" permissions_from_state="recursos_apresentados" />
+  <!-- Baixa às comissões -->
+  <state id="DistribuicaoBancadasParlamentaresEDeputados" title="Distribuição às Bancadas Parlamentares e aos Deputados que o requererem [Art.º 163.º, n.ºs 1 do RPN]" permissions_from_state="rascunho"/>
+
+  <state id="comissao_parecer"
+      title="Relatório e Parecer Fundamentado da Comissão de Economia e Finanças [Art.º 164.º, n.º 2 do RPN]"
+      actions="version">
+    <facet ref=".public_edit_Clerk" />
+    <facet ref="attachment.add_clerk" />
+    <facet ref="event.add_clerk" />
+    <facet ref="group_assignment.comissao_parecer" />
+  </state>
+  <state id="iniciativa_distribuida_comissao_competente" title="Envio à Comissão de Economia e Finanças [Art.º 164.º, n.º 1 do RPN]" permissions_from_state="comissao_parecer" />
+  <state id="comissao_parecer_agendado" title="Agendada Comissão de Economia e Finanças para Relatório e Parecer" permissions_from_state="comissao_parecer" />
+  <state id="comissao_parecer_adiado" title="Adiada Comissão de Economia e Finanças para Relatório e Parecer" permissions_from_state="comissao_parecer" />
+  <!-- Fim de Parecer comissão -->
+
+  <!-- Análise do processo de urgência -->
+  <state id="plenario_processo_urgencia_agendado" title="Agendado Plenário para votação do parecer sobre processo de urgência" permissions_from_state="comissao_parecer" />
+  <state id="plenario_processo_urgencia_adiado" title="Adiada Plenário para votação do parecer sobre processo de urgência" permissions_from_state="comissao_parecer" />
+  <state id="plenario_processo_urgencia"
+    title="Plenário para votação do parecer sobre processo de urgência [Art.º 97.º do RPN]"
+    actions="version">
+    <facet ref=".public_edit_Clerk" />
+    <facet ref="attachment.add_clerk" />
+    <facet ref="event.add_clerk" />
+    <facet ref="group_assignment.comissao_parecer" />
+  </state>
+  <!-- Fim Análise do processo de urgência -->
+
+  <!-- Generalidade -->
+  <state id="plenario_discussao_generalidade_agendado" title="Agendado Plenário para Discussão e Votação na Generalidade [Art.º 165.º do RPN]" permissions_from_state="comissao_parecer" />
+  <state id="plenario_discussao_generalidade" title="Plenário para Discussão e Votação na Generalidade [Art.º 166.º do RPN]" actions="version" permissions_from_state="plenario_discussao_generalidade_agendado" />
+  <state id="plenario_discussao_generalidade_adiado" title="Adiado Plenário para Discussão e Votação na Generalidade" permissions_from_state="plenario_discussao_generalidade" />
+  <state id="aprovado_generalidade"
+      title="Aprovado na Generalidade [Art.º 166.º, n.º 5 do RPN]"
+      actions="version"
+      permissions_from_state="plenario_discussao_generalidade"
+    />
+
+ 
+  <!-- Fim de Generalidade -->
+
+  <!-- Especialidade -->
+  <state id="comissao_especialidade"
+    title="Comissão"
+    actions="version">
+    <facet ref=".public_edit_Clerk" />
+    <facet ref="attachment.add_clerk" />
+    <facet ref="event.add_clerk" />
+    <facet ref="group_assignment.comissao_especialidade" />
+  </state>
+  <state id="comissao_especialidade_agendado" title="Agendada Comissão" permissions_from_state="comissao_especialidade" />
+  <state id="comissao_especialidade_adiado" title="Adiada Comissão" permissions_from_state="comissao_especialidade" />
+  <state id="aprovado_especialidade" title="Aprovado na Especialidade [Art.º 167.º, n.º 2 do RPN]" permissions_from_state="comissao_especialidade" />
+  <!-- Fim de Especialidade -->
+
+  <!-- Avocação pelo plenário da discussão na especialidade-->
+  <state id="plenario_avocacao_agendado_fase2" title="Agendado Plenário para Discussão e Votação na Especialidade" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_avocacao_adiado_fase2" title="Adiado Plenário para Discussão e Votação na Especialidade" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_avocacao_fase2" title="Plenário para Discussão e Votação na Especialidade [Art.º 167.º, n.º 2 do RPN]" actions="version" permissions_from_state="comissao_especialidade" />
+  <!-- Fim avocação pelo plenário da discussão na especialidade-->
+  <!-- Votacao final global -->
+  <state id="plenario_votacao_final_agendado" title="Agendado Plenário para Votação Final Global" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_votacao_final_adiado" title="Adiado Plenário para Votação Final Global" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_votacao_final" title="Plenário para Votação Final Global [Art.º 168.º do RPN]" actions="version" permissions_from_state="comissao_especialidade" />
+  <state id="aprovado_votacao_final" title="Aprovação na Votação Final Global [Art.º 168.º do RPN]" actions="version" permissions_from_state="comissao_especialidade" />
+  <!-- Fim de votacao final global -->
+  <!-- Texto final -->
+  <state id="comissao_redacao_final_agendado" title="Agendada Comissão de Economia e Finanças para Redação Final" permissions_from_state="plenario_votacao_final"/>
+  <state id="comissao_redacao_final_adiado" title="Adiada Comissão de Economia e Finanças para Redação Final" permissions_from_state="plenario_votacao_final"/>
+  <state id="comissao_redacao_final" title="Comissão de Economia e Finanças para Redação Final [Art.º 169.º do RPN]">
+    <facet ref=".public_edit_Clerk" />
+    <facet ref="attachment.add_clerk" />
+    <facet ref="event.add_clerk" />
+    <facet ref="group_assignment.comissao_redacao" />
+  </state>
+  <state id="texto_definitivo" title="Projeto de Decreto" permissions_from_state="plenario_votacao_final" />
+  <state id="espera_assinatura_PPN" title="Aguarda a assinatura do PPN" permissions_from_state="plenario_votacao_final" />
+
+  <!-- Fim de Texto final -->
+
+  <!-- reclamação texto final -->
+  <state id="apresentacao_reclamacao" title="Apresentação de Reclamação ao PPN sobre o Projeto de Decreto [Art.º 113.º n.º 1 do RPN]" actions="version" permissions_from_state="comissao_especialidade" />
+
+  <state id="reclamacao_nao_aceite" title="Reclamação não aceite" actions="version" permissions_from_state="comissao_especialidade" />
+
+  <state id="plenario_reclamacao_agendado" title="Agendado Plenário para Análise da Decisão do PPN sobre a Reclamação" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_reclamacao_adiado" title="Adiado Plenário para Análise da Decisão do PPN sobre a Reclamação" permissions_from_state="comissao_especialidade" />
+  <state id="plenario_reclamacao" title="Plenário para Análise da Decisão do PPN sobre a Reclamação [Art.º 113.º n.º 2 do RPN]" actions="version" permissions_from_state="comissao_especialidade" />
+  <!-- Fim de reclamação texto final -->
+
+  <!-- Envio para assinatura PPN e envio PR -->
+
+  <state id="espera_decisao_presidente" title="Aguarda Promulgação [Art.º 173.º do RPN]" permissions_from_state="plenario_votacao_final" />
+  <state id="promulgado" title="Promulgado" permissions_from_state="plenario_votacao_final" />
+  <!-- Fim envio para assinatura PPN e envio PR -->
+  <!-- Vetos -->
+  <state id="vetadoInconstitucional" title="Veto por Inconstitucionalidade [Art.º 117.º do RPN e Art.º 149.º da CRDTL]" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaExpurgarInconstitucionalidades_Agendado" title="Agendado Plenário para Expurgar Normas Declaradas Inconstitucionais" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaExpurgarInconstitucionalidades_Adiado" title="Adiado Plenário para Expurgar Normas Declaradas Inconstitucionais" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaExpurgarInconstitucionalidades" title="Plenário para Expurgar Normas Declaradas Inconstitucionais [Art.º 117.º n.º 2 do RPN]" permissions_from_state="plenario_votacao_final" />
+  <state id="PPN_Envia_Decreto" title="PPN envia Decreto ao PR [Art.º 114.º do RPN]" permissions_from_state="plenario_votacao_final" />
+  <state id="vetadoPoliticamente" title="Veto Político [Art.º 115.º e 116.º do RPN e Art.º 88.º n.º 1 da CRDTL]" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaConfirmacao_Agendado" title="Agendado Plenário para Confirmação do Decreto" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaConfirmacao_Adiado" title="Adiado Plenário para Confirmação do Decreto" permissions_from_state="plenario_votacao_final" />
+  <state id="plenarioParaConfirmacao" title="Plenário para Confirmação do Decreto [Art.º 115.º n.º 3 do RPN e Art.º 88.º n.ºs 2 e 3 da CRDTL]" permissions_from_state="plenario_votacao_final" />
+
+  <!-- Fim Vetos -->
+  <state id="publicado_no_DR" title="Publicação no Jornal da República" permissions_from_state="plenario_votacao_final" />
+  <state id="rejeitado_sem_recurso" title="Iniciativa não admitida" permissions_from_state="plenario_votacao_final" />
+  <state id="rejeitada_votacao_final_global" title="Rejeitada na Fase de Votação Final Global [Art.º 168.º do RPN]" permissions_from_state="plenario_votacao_final" />
+  <state id="rejeitada_discussao_generalidade" title="Iniciativa Rejeitada na Fase de Discussão na Generalidade [Art.º 166.º, n.º 5 do RPN]" permissions_from_state="plenario_votacao_final" />
+  
+  <!-- Final dos estados-->
+
+  <!-- Transitions-->
+  <!-- Mesa -->
+  <transition title="Criar Iniciativa"
+              source=""
+              destination="rascunho"
+              trigger="automatic"
+    />
+  <transition title="Submeter Iniciativa"
+              source="rascunho"
+              destination="mesa"
+              trigger="manual" require_confirmation="true"
+              roles="Drafter ClerkAssembly"
+    />
+  <transition title="Decisão de não admissão da iniciativa"
+          source="plenario_votacao_recursos"
+          destination="rejeitado_sem_recurso"
+          trigger="manual" require_confirmation="true"
+          roles="Drafter"
+    />
+  <transition title="Rejeitar Iniciativa por falta de requisitos"
+          source="mesa"
+          destination="rejeitado_PAN_req"
+          trigger="manual" require_confirmation="true"
+          roles="Drafter"
+    />
+  <transition title="PPN Rejeita Admissão"
+          source="mesa"
+          destination="rejeitado_PAN"
+          trigger="manual" require_confirmation="true"
+          roles="Drafter"
+    />
+
+  <transition title="Apresentar Recurso"
+      source="rejeitado_PAN admissaoPan"
+      destination="recursos_apresentados"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="PPN Admite Iniciativa"
+       source="mesa"
+       destination="admissaoPan"
+       condition=""
+       trigger="manual" require_confirmation="true"
+       roles="ClerkAssembly"
+    />
+
+  <transition title="PPN Admite Iniciativa"
+       source="admissaoPan"
+       destination="iniciativa_admitida"
+       condition=""
+       trigger="manual" require_confirmation="true"
+       roles="ClerkAssembly"
+    />
+
+
+  <!-- fim mesa -->
+  <!-- recurso admissão -->
+
+
+  <transition title="Agendar Plenário para Leitura e Votação do Recurso"
+      source="recursos_apresentados plenario_votacao_recursos_adiado"
+      destination="plenario_votacao_recursos_agendado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="Enviar para Plenário para Leitura e Votação do Recurso"
+      source="plenario_votacao_recursos_agendado"
+      destination="plenario_votacao_recursos"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para Leitura e Votação do Recurso"
+      source="plenario_votacao_recursos"
+      destination="plenario_votacao_recursos_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Admitir Iniciativa"
+        source="plenario_votacao_recursos admissaoPan"
+        destination="admissaoPan"
+        condition=""
+        trigger="manual" require_confirmation="true"
+        roles="ClerkAssembly"
+    />
+  <!-- Fim recursos-->
+
+  <transition title="Distribuição pelas Bancadas e Grupos Parlamentares"
+    source="iniciativa_admitida"
+    destination="DistribuicaoBancadasParlamentaresEDeputados"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+  <transition title="Distribuir Iniciativa à Comissão Competente"
+    source="DistribuicaoBancadasParlamentaresEDeputados"
+    destination="iniciativa_distribuida_comissao_competente"
+    trigger="manual"
+    roles="ClerkAssembly"
+    require_confirmation="true"
+    condition=""
+   />
+ 
+  <!-- Parecer comissão -->
+
+  <transition title="Agendar a Comissão de Economia e Finanças para Relatório e Parecer"
+     source="comissao_parecer_adiado iniciativa_distribuida_comissao_competente"
+     destination="comissao_parecer_agendado"
+     condition=""
+     trigger="manual" require_confirmation="true"
+     roles="ClerkAssembly"
+    />
+  <transition title="Adiar a Comissão de Economia e Finanças para Relatório e Parecer"
+      source="comissao_parecer"
+      destination="comissao_parecer_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Enviar para Comissão de Economia e Finanças para Relatório e Parecer"
+      source="comissao_parecer_agendado"
+      destination="comissao_parecer"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <!-- Fim de Parecer comissão -->
+
+  <!-- Análise do processo de urgência -->
+
+
+  <transition title="Agendar Plenário para votação do parecer sobre processo de urgência"
+     source="iniciativa_distribuida_comissao_competente plenario_processo_urgencia_adiado"
+     destination="plenario_processo_urgencia_agendado"
+     condition=""
+     trigger="manual" require_confirmation="true"
+     roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para votação do parecer sobre processo de urgência"
+      source="plenario_processo_urgencia_agendado"
+      destination="plenario_processo_urgencia_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Enviar para comissão competente para relatório e parecer"
+      source="plenario_processo_urgencia_agendado"
+      destination="plenario_processo_urgencia"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="Plenário comunica decisão à comissão competente"
+    source="plenario_processo_urgencia"
+    destination="iniciativa_distribuida_comissao_competente"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+
+
+  <!-- Fim Análise do processo de urgência -->
+
+
+  <!-- Generalidade -->
+  <transition title="Agendar Plenário para Discussão e Votação na Generalidade"
+      source="comissao_parecer plenario_discussao_generalidade_adiado"
+      destination="plenario_discussao_generalidade_agendado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para Discussão e Votação na Generalidade"
+      source="plenario_discussao_generalidade"
+      destination="plenario_discussao_generalidade_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Realizar Discussão e Votação na Generalidade"
+      source="plenario_discussao_generalidade_agendado"
+      destination="plenario_discussao_generalidade"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Iniciativa Aprovada na Generalidade"
+      source="plenario_discussao_generalidade"
+      destination="aprovado_generalidade"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Iniciativa Rejeitada na Fase de Discussão na Generalidade"
+      source="plenario_discussao_generalidade"
+      destination="rejeitada_discussao_generalidade"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <!-- Fim de Generalidade -->
+
+  <!-- Especialidade -->
+  <transition title="Agendar Comissão"
+      source="aprovado_generalidade comissao_especialidade_adiado"
+      destination="comissao_especialidade_agendado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Enviar para Comissão"
+      source="comissao_especialidade_agendado"
+      destination="comissao_especialidade"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Comissão"
+      source="comissao_especialidade_agendado"
+      destination="comissao_especialidade_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+
+  <!-- Fim de Especialidade -->
+
+  <!-- Especialidade avocado no plenário-->
+ 
+
+
+  <transition title="Agendar Plenário para Discussão e Votação na Especialidade"
+      source="plenario_avocacao_adiado_fase2 aprovado_generalidade comissao_especialidade plenarioParaConfirmacao"
+      destination="plenario_avocacao_agendado_fase2"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Enviar para Plenário para Discussão e Votação na Especialidade"
+      source="plenario_avocacao_agendado_fase2"
+      destination="plenario_avocacao_fase2"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para Discussão e Votação na Especialidade"
+      source="plenario_avocacao_fase2"
+      destination="plenario_avocacao_adiado_fase2"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="Iniciativa Aprovada na Votação da Especialidade"
+      source="plenario_avocacao_fase2 comissao_especialidade"
+      destination="aprovado_especialidade"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <!-- Fim especialidade avocado no plenário-->
+
+  <!-- Votacao final global -->
+  <transition title="Agendar Plenário para Discussão e Votação Final Global"
+      source="aprovado_especialidade plenario_votacao_final_adiado"
+      destination="plenario_votacao_final_agendado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para Discussão e Votação Final Global"
+      source="plenario_votacao_final"
+      destination="plenario_votacao_final_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Discussão e votação final global"
+      source="plenario_votacao_final_agendado"
+      destination="plenario_votacao_final"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="Iniciativa aprovada na votação final"
+      source="plenario_votacao_final"
+      destination="aprovado_votacao_final"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+
+
+  <transition title="Rejeitada na fase de Votação Final Global"
+      source="plenario_votacao_final"
+      destination="rejeitada_votacao_final_global"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <!-- Fim de votacao final global -->
+
+  <!-- Votacao final global -->
+  <!-- Fim de votacao final global -->
+
+  <!-- Texto final -->
+  <transition title="Agendar Comissão de Economia e Finanças para Redação Final"
+        source="aprovado_votacao_final comissao_redacao_final_adiado"
+        destination="comissao_redacao_final_agendado"
+        condition=""
+        trigger="manual" require_confirmation="true"
+        roles="ClerkAssembly"
+    />
+  <transition title="Enviar para Comissão de Economia e Finanças para Redação Final"
+     source="comissao_redacao_final_agendado"
+     destination="comissao_redacao_final"
+     condition=""
+     trigger="manual" require_confirmation="true"
+     roles="ClerkAssembly"
+    />
+  <transition title="Adiar Comissão de Economia e Finanças para Redação Final"
+      source="comissao_redacao_final"
+      destination="comissao_redacao_final_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <!-- Fim de Texto final -->
+
+  <!-- reclamação texto final -->
+  <transition title="Apresentar reclamações ao Projeto de Decreto"
+       source="texto_definitivo"
+       destination="apresentacao_reclamacao"
+       condition=""
+       trigger="manual" require_confirmation="true"
+       roles="ClerkAssembly"
+    />
+  <transition title="Plenário para discussão e votação de Recurso sobre a decisão do PPN"
+      source="plenario_reclamacao_agendado"
+      destination="plenario_reclamacao"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Adiar Plenário para discussão e votação de Recurso sobre a decisão do PPN"
+      source="plenario_reclamacao"
+      destination="plenario_reclamacao_adiado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+  <transition title="Agendar Plenário para discussão e votação de Recurso sobre a decisão do PPN"
+      source="plenario_reclamacao_adiado apresentacao_reclamacao"
+      destination="plenario_reclamacao_agendado"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+
+
+
+  <transition title="Plenário rejeita Reclamação"
+      source="plenario_reclamacao"
+      destination="espera_assinatura_PPN"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="PPN aceita reclamação"
+    source="apresentacao_reclamacao"
+    destination="comissao_redacao_final_agendado"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+
+  <transition title="PPN não aceita reclamação"
+    source="apresentacao_reclamacao"
+    destination="reclamacao_nao_aceite"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+
+  <transition title="Não Apresentado Recurso Decisão PPN"
+     source="reclamacao_nao_aceite"
+     destination="espera_assinatura_PPN"
+     condition=""
+     trigger="manual" require_confirmation="true"
+     roles="ClerkAssembly"
+    />
+
+  <transition title="Plenário aceita reclamação"
+  source="plenario_reclamacao"
+  destination="comissao_redacao_final_agendado"
+  condition=""
+  trigger="manual" require_confirmation="true"
+  roles="ClerkAssembly"
+    />
+
+  <!-- Fim de reclamação texto final -->
+
+  <!-- Envio para assinatura PPN e envio PR -->
+  <transition title="Publicar na Publicação do Parlamento"
+       source="comissao_redacao_final"
+       destination="texto_definitivo"
+       condition=""
+       trigger="manual" require_confirmation="true"
+       roles="ClerkAssembly"
+    />
+  <transition title="Texto final enviado para assinatura do PPN"
+      source="texto_definitivo"
+      destination="espera_assinatura_PPN"
+      condition=""
+      trigger="manual" require_confirmation="true"
+      roles="ClerkAssembly"
+    />
+
+  <transition title="Aguarda Envio do Decreto ao PR"
+   source="espera_assinatura_PPN"
+   destination="PPN_Envia_Decreto"
+   condition=""
+   trigger="manual" require_confirmation="true"
+   roles="ClerkAssembly"
+    />
+
+  <transition title="Enviar a PR para Promulgação"
+    source="PPN_Envia_Decreto"
+    destination="espera_decisao_presidente"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+  <transition title="Presidente Promulga e manda publicar"
+    source="espera_decisao_presidente"
+    destination="promulgado"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+  <transition title="Publicar no Jornal da República"
+    source="promulgado"
+    destination="publicado_no_DR"
+    condition=""
+    trigger="manual" require_confirmation="true"
+    roles="ClerkAssembly"
+    />
+
+  <!-- Fim envio para assinatura PPN e envio PR -->
+
+  <!-- Vetos -->
+  <transition title="Decreto vetado politicamente"
+              source="espera_decisao_presidente "
+              condition=""
+              destination="vetadoPoliticamente"
+              trigger="manual" require_confirmation="true"
+              roles="ClerkAssembly"
+    />
+
+  <transition title="Agendar Plenário para Confirmação do Decreto"
+            source="vetadoPoliticamente plenarioParaConfirmacao_Adiado"
+            condition=""
+            destination="plenarioParaConfirmacao_Agendado"
+            trigger="manual" require_confirmation="true"
+            roles="ClerkAssembly"
+    />
+
+  <transition title="Adiar Plenário para Confirmação do Decreto"
+            source="plenarioParaConfirmacao_Agendado"
+            condition=""
+            destination="plenarioParaConfirmacao_Adiado"
+            trigger="manual" require_confirmation="true"
+            roles="ClerkAssembly"
+    />
+
+  <transition title="Plenário para Confirmação do Decreto"
+            source="plenarioParaConfirmacao_Agendado"
+            condition=""
+            destination="plenarioParaConfirmacao"
+            trigger="manual" require_confirmation="true"
+            roles="ClerkAssembly"
+    />
+
+  <transition title="Decreto Confirmado"
+            source="plenarioParaConfirmacao plenarioParaExpurgarInconstitucionalidades"
+            condition=""
+            destination="PPN_Envia_Decreto"
+            trigger="manual" require_confirmation="true"
+            roles="ClerkAssembly"
+    />
+
+
+  <transition title="Decreto vetado por inconstitucionalidade"
+            source="espera_decisao_presidente"
+            condition=""
+            destination="vetadoInconstitucional"
+            trigger="manual" require_confirmation="true"
+            roles="ClerkAssembly"
+    />
+
+  <transition title="Agendar Plenário para Expurgar Inconstitucionalidades"
+          source="vetadoInconstitucional plenarioParaExpurgarInconstitucionalidades_Agendado"
+          condition=""
+          destination="plenarioParaExpurgarInconstitucionalidades_Agendado"
+          trigger="manual" require_confirmation="true"
+          roles="ClerkAssembly"
+    />
+
+  <transition title="Adiar Plenário para Expurgar Inconstitucionalidades"
+          source="plenarioParaExpurgarInconstitucionalidades_Agendado"
+          condition=""
+          destination="plenarioParaExpurgarInconstitucionalidades_Adiado"
+          trigger="manual" require_confirmation="true"
+          roles="ClerkAssembly"
+    />
+
+  <transition title="Plenário para Expurgar Inconstitucionalidades"
+          source="plenarioParaExpurgarInconstitucionalidades_Agendado"
+          condition=""
+          destination="plenarioParaExpurgarInconstitucionalidades"
+          trigger="manual" require_confirmation="true"
+          roles="ClerkAssembly"
+    />
+
+  <transition title="Agendar Comissão de Economia e Finanças para Redacção Final depois de Expurgadas as Inconstitucionalidades"
+        source="plenarioParaExpurgarInconstitucionalidades"
+        condition=""
+        destination="comissao_redacao_final_agendado"
+        trigger="manual" require_confirmation="true"
+        roles="ClerkAssembly"
+    />
+
+
+
+  <!-- Fim Vetos -->
+
+  <!-- Finais -->
+
+
+  <!-- Final transitions-->
+</workflow>
+
